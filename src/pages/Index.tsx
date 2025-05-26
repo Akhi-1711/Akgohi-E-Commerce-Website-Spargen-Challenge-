@@ -55,7 +55,7 @@ const generateProducts = () => {
         discount: Math.floor(Math.random() * 50) + 10,
         inStock: Math.random() > 0.1
       });
-    });
+    }
   });
   return products;
 };
