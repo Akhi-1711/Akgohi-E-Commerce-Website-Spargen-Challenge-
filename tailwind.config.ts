@@ -63,22 +63,13 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Enhanced yellow color palette
-				'brand-yellow': {
-					50: '#fffbeb',
-					100: '#fef3c7',
-					200: '#fde68a',
-					300: '#fcd34d',
-					400: '#fbbf24',
-					500: '#f59e0b',
-					600: '#d97706',
-					700: '#b45309',
-					800: '#92400e',
-					900: '#78350f'
-				},
-				'neon-yellow': '#ffee9c',
-				'warm-yellow': '#fbbf24',
-				'golden-yellow': '#f59e0b'
+				// Category specific colors
+				'category-electronics': '#dbeafe',
+				'category-fashion': '#fce7f3',
+				'category-home': '#dcfce7',
+				'category-books': '#fef3c7',
+				'category-sports': '#fed7aa',
+				'category-beauty': '#e9d5ff'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -107,8 +98,8 @@ export default {
 					'50%': { transform: 'translateY(-10px)' }
 				},
 				'glow': {
-					'0%, 100%': { boxShadow: '0 0 20px rgba(251, 191, 36, 0.4)' },
-					'50%': { boxShadow: '0 0 40px rgba(251, 191, 36, 0.8)' }
+					'0%, 100%': { boxShadow: '0 0 20px rgba(59, 130, 246, 0.4)' },
+					'50%': { boxShadow: '0 0 40px rgba(59, 130, 246, 0.8)' }
 				},
 				'slide-in': {
 					'0%': { transform: 'translateX(-100%)', opacity: '0' },
@@ -130,11 +121,11 @@ export default {
 				},
 				'pulse-neon': {
 					'0%, 100%': { 
-						textShadow: '0 0 5px #fbbf24, 0 0 10px #fbbf24, 0 0 15px #fbbf24',
+						textShadow: '0 0 5px #3b82f6, 0 0 10px #3b82f6, 0 0 15px #3b82f6',
 						transform: 'scale(1)'
 					},
 					'50%': { 
-						textShadow: '0 0 10px #fbbf24, 0 0 20px #fbbf24, 0 0 30px #fbbf24',
+						textShadow: '0 0 10px #3b82f6, 0 0 20px #3b82f6, 0 0 30px #3b82f6',
 						transform: 'scale(1.05)'
 					}
 				},
@@ -150,11 +141,11 @@ export default {
 				},
 				'icon-glow': {
 					'0%, 100%': { 
-						filter: 'drop-shadow(0 0 2px #fbbf24)',
+						filter: 'drop-shadow(0 0 2px #3b82f6)',
 						transform: 'scale(1)'
 					},
 					'50%': { 
-						filter: 'drop-shadow(0 0 8px #fbbf24)',
+						filter: 'drop-shadow(0 0 8px #3b82f6)',
 						transform: 'scale(1.1)'
 					}
 				}

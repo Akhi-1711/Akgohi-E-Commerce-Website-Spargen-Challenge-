@@ -5,44 +5,44 @@
 
 @layer base {
   :root {
-    --background: 45 90% 90%;
-    --foreground: 45 30% 15%;
+    --background: 210 40% 98%;
+    --foreground: 222.2 84% 4.9%;
 
-    --card: 45 80% 95%;
-    --card-foreground: 45 30% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
 
-    --popover: 45 80% 95%;
-    --popover-foreground: 45 30% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 45 70% 50%;
-    --primary-foreground: 45 5% 95%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
 
-    --secondary: 45 50% 85%;
-    --secondary-foreground: 45 30% 20%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
 
-    --muted: 45 50% 85%;
-    --muted-foreground: 45 30% 40%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 45 50% 85%;
-    --accent-foreground: 45 30% 20%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 45 50% 80%;
-    --input: 45 50% 85%;
-    --ring: 45 70% 50%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 45 80% 95%;
-    --sidebar-foreground: 45 30% 15%;
-    --sidebar-primary: 45 70% 50%;
-    --sidebar-primary-foreground: 45 5% 95%;
-    --sidebar-accent: 45 50% 85%;
-    --sidebar-accent-foreground: 45 30% 20%;
-    --sidebar-border: 45 50% 80%;
-    --sidebar-ring: 45 70% 50%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
@@ -52,29 +52,29 @@
   }
 
   body {
-    @apply bg-gradient-to-br from-yellow-100 via-yellow-200 to-yellow-300 text-foreground min-h-screen;
+    @apply bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 text-foreground min-h-screen;
   }
 }
 
 @layer components {
   .glass-card {
-    @apply backdrop-blur-xl bg-yellow-50/30 border border-yellow-300/40 rounded-2xl shadow-xl;
+    @apply backdrop-blur-xl bg-white/80 border border-gray-200 rounded-2xl shadow-xl;
   }
   
   .neon-border {
-    @apply border-2 border-transparent bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-border;
+    @apply border-2 border-transparent bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-border;
   }
   
   .product-hover {
-    @apply transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/20;
+    @apply transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/20;
   }
   
   .text-gradient {
-    @apply bg-gradient-to-r from-yellow-600 via-yellow-700 to-yellow-800 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-blue-600 via-purple-700 to-indigo-800 bg-clip-text text-transparent;
   }
   
   .shimmer-effect {
-    background: linear-gradient(90deg, transparent, rgba(255,238,156,0.4), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
     background-size: 200% 100%;
     animation: shimmer 2s infinite;
   }
@@ -94,6 +94,31 @@
   .icon-glow {
     @apply transition-all duration-300 hover:drop-shadow-lg hover:scale-110;
   }
+
+  /* Category specific backgrounds */
+  .category-electronics {
+    @apply bg-gradient-to-br from-blue-100 to-blue-200;
+  }
+  
+  .category-fashion {
+    @apply bg-gradient-to-br from-pink-100 to-rose-200;
+  }
+  
+  .category-home {
+    @apply bg-gradient-to-br from-green-100 to-emerald-200;
+  }
+  
+  .category-books {
+    @apply bg-gradient-to-br from-amber-100 to-yellow-200;
+  }
+  
+  .category-sports {
+    @apply bg-gradient-to-br from-orange-100 to-red-200;
+  }
+  
+  .category-beauty {
+    @apply bg-gradient-to-br from-purple-100 to-violet-200;
+  }
 }
 
 @keyframes shimmer {
@@ -107,11 +132,11 @@
 
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 5px #fbbf24, 0 0 10px #fbbf24, 0 0 15px #fbbf24;
+    box-shadow: 0 0 5px #3b82f6, 0 0 10px #3b82f6, 0 0 15px #3b82f6;
     transform: scale(1);
   }
   50% {
-    box-shadow: 0 0 10px #fbbf24, 0 0 20px #fbbf24, 0 0 30px #fbbf24;
+    box-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6, 0 0 30px #3b82f6;
     transform: scale(1.02);
   }
 }
