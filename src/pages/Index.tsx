@@ -39,10 +39,41 @@ const categories = [
   { id: 'zipwear', name: 'Zip Wearables (Smartwear)', icon: '⌚', color: 'from-cyan-500 to-purple-500' }
 ];
 
+// Product descriptions for different categories
+const productDescriptions = {
+  apparel: ['Premium cotton fabric', 'Comfortable fit', 'Stylish design', 'Durable material', 'Trendy fashion'],
+  books: ['Engaging storyline', 'Educational content', 'Best-selling author', 'Comprehensive guide', 'Inspirational read'],
+  cosmetics: ['Natural ingredients', 'Long-lasting formula', 'Skin-friendly', 'Professional quality', 'Dermatologist tested'],
+  digital: ['Latest technology', 'High performance', 'User-friendly interface', 'Advanced features', 'Smart connectivity'],
+  electronics: ['Energy efficient', 'Premium quality', 'Warranty included', 'Easy installation', 'Modern design'],
+  footwear: ['Comfortable sole', 'Breathable material', 'Stylish appearance', 'Durable construction', 'Perfect fit'],
+  groceries: ['Fresh quality', 'Organic certified', 'Nutritious choice', 'Premium grade', 'Daily essential'],
+  home: ['Elegant design', 'Premium materials', 'Easy maintenance', 'Modern aesthetics', 'Functional beauty'],
+  icecream: ['Creamy texture', 'Natural flavors', 'Premium ingredients', 'Refreshing taste', 'Artisanal quality'],
+  jewelry: ['Genuine materials', 'Elegant craftsmanship', 'Timeless design', 'Premium finish', 'Gift worthy'],
+  kitchen: ['Stainless steel', 'Easy to clean', 'Multi-functional', 'Energy efficient', 'Professional grade'],
+  laptops: ['High performance', 'Latest processor', 'Long battery life', 'Lightweight design', 'Professional quality'],
+  mobiles: ['Latest features', 'High-res camera', 'Fast processor', 'Long battery', 'Premium design'],
+  nutrition: ['Clinically tested', 'Natural ingredients', 'Health benefits', 'Doctor recommended', 'Quality assured'],
+  organic: ['100% organic', 'Chemical-free', 'Farm fresh', 'Sustainably grown', 'Pure quality'],
+  pets: ['Pet-safe materials', 'Durable quality', 'Comfort focused', 'Vet approved', 'Premium care'],
+  quickmeals: ['Ready in minutes', 'Nutritious meal', 'Fresh ingredients', 'Convenient packaging', 'Delicious taste'],
+  ridegear: ['Safety certified', 'Durable material', 'Comfortable fit', 'Weather resistant', 'Professional grade'],
+  stationery: ['High quality paper', 'Smooth writing', 'Durable binding', 'Professional look', 'Eco-friendly'],
+  toys: ['Educational value', 'Safe materials', 'Age appropriate', 'Fun and engaging', 'Skill development'],
+  underwear: ['Soft fabric', 'Comfortable fit', 'Breathable material', 'Quality stitching', 'All-day comfort'],
+  vegetables: ['Farm fresh', 'Organic grown', 'Nutritious choice', 'Premium quality', 'Daily essential'],
+  watches: ['Precision timing', 'Elegant design', 'Durable build', 'Water resistant', 'Stylish accessory'],
+  xtreme: ['Safety tested', 'Professional grade', 'Durable construction', 'Performance focused', 'Adventure ready'],
+  yoga: ['Eco-friendly', 'Comfortable use', 'Non-slip design', 'Durable material', 'Wellness focused'],
+  zipwear: ['Smart technology', 'Comfort fit', 'Advanced features', 'Stylish design', 'Health monitoring']
+};
+
 // Sample products for each category
 const generateProducts = () => {
   const products = [];
   categories.forEach(category => {
+    const descriptions = productDescriptions[category.id as keyof typeof productDescriptions] || ['High quality product'];
     for (let i = 1; i <= 20; i++) {
       products.push({
         id: `${category.id}-${i}`,
@@ -53,7 +84,12 @@ const generateProducts = () => {
         image: `https://picsum.photos/300/300?random=${category.id}-${i}`,
         category: category.id,
         discount: Math.floor(Math.random() * 50) + 10,
-        inStock: Math.random() > 0.1
+        inStock: Math.random() > 0.1,
+        description: descriptions[Math.floor(Math.random() * descriptions.length)],
+        sizes: ['S', 'M', 'L', 'XL'],
+        colors: ['Red', 'Blue', 'Green', 'Black', 'White'],
+        material: 'Premium Quality',
+        brand: `Brand ${Math.floor(Math.random() * 10) + 1}`
       });
     }
   });
@@ -67,7 +103,8 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
-  const [wishlistItems, setWishlistItems] = useState([]);
+  const [wishlistItems, setWishlistItems] = useState<any[]>([]);
+  const [showAllCategories, setShowAllCategories] = useState(false);
   
   const { state, addItem } = useCart();
 
@@ -77,24 +114,22 @@ const Index = () => {
     if (savedUser) {
       setUser(JSON.parse(savedUser));
     }
+    
+    // Load wishlist from localStorage
+    const savedWishlist = localStorage.getItem('akgohi_wishlist');
+    if (savedWishlist) {
+      setWishlistItems(JSON.parse(savedWishlist));
+    }
   }, []);
 
   // Featured products for hero section
   const featuredProducts = products.slice(0, 8);
 
-  const addToCart = (product: any) => {
-    addItem({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      category: product.category
-    });
-  };
-
   const addToWishlist = (product: any) => {
     console.log('Adding to wishlist:', product);
-    setWishlistItems(prev => [...prev, product]);
+    const updatedWishlist = [...wishlistItems, product];
+    setWishlistItems(updatedWishlist);
+    localStorage.setItem('akgohi_wishlist', JSON.stringify(updatedWishlist));
   };
 
   const handleAuthSuccess = (userData: any) => {
@@ -110,7 +145,9 @@ const Index = () => {
             {/* Logo */}
             <div className="flex items-center space-x-4">
               <div className="text-3xl font-bold">
-                <span className="text-gradient animate-pulse-neon">AKGOHI</span>
+                <span className="text-gradient animate-pulse-neon bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
+                  AKGOHI
+                </span>
               </div>
             </div>
 
@@ -196,11 +233,32 @@ const Index = () => {
                 <span className="text-sm font-medium group-hover:text-gradient">{category.name}</span>
               </Link>
             ))}
-            <Button variant="ghost" className="text-white/80 hover:text-white">
+            <Button 
+              variant="ghost" 
+              className="text-white/80 hover:text-white"
+              onClick={() => setShowAllCategories(!showAllCategories)}
+            >
               <ChevronDown className="h-4 w-4 ml-1" />
               More
             </Button>
           </div>
+          
+          {/* All Categories Dropdown */}
+          {showAllCategories && (
+            <div className="mt-4 grid grid-cols-3 md:grid-cols-6 gap-4 p-4 bg-black/40 rounded-lg">
+              {categories.map((category) => (
+                <Link
+                  key={category.id}
+                  to={`/category/${category.id}`}
+                  className="flex flex-col items-center p-2 text-white/80 hover:text-white transition-colors group"
+                  onClick={() => setShowAllCategories(false)}
+                >
+                  <span className="text-2xl mb-1 group-hover:animate-bounce">{category.icon}</span>
+                  <span className="text-xs text-center">{category.name}</span>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </nav>
 
@@ -210,11 +268,19 @@ const Index = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center">
             <h1 className="text-6xl md:text-8xl font-bold mb-6">
-              <span className="text-gradient animate-pulse-neon">AKGOHI</span>
+              <span className="text-gradient animate-pulse-neon bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
+                AKGOHI
+              </span>
             </h1>
-            <p className="text-xl md:text-2xl text-white/80 mb-8 animate-fade-in">
+            <p className="text-xl md:text-2xl text-white/80 mb-4 animate-fade-in">
               Developed by <span className="text-purple-400 font-semibold">Akhila Reddy</span> - Your Ultimate Shopping Destination
             </p>
+            <div className="text-lg text-white/60 mb-8 space-y-1">
+              <p>College: <span className="text-purple-300">GPCET</span></p>
+              <p>Village: <span className="text-purple-300">Hosur</span></p>
+              <p>Contact: <span className="text-purple-300">9988776655</span></p>
+              <p>Email: <span className="text-purple-300">akhila@gmail.com</span></p>
+            </div>
             <div className="flex justify-center space-x-4">
               <Button size="lg" className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transform hover:scale-105 transition-all duration-300">
                 Explore Now
@@ -231,17 +297,17 @@ const Index = () => {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12 text-white">
-            Shop by <span className="text-gradient">Category</span>
+            Shop by <span className="text-gradient bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">Category</span>
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
             {categories.map((category, index) => (
               <Link key={category.id} to={`/category/${category.id}`}>
                 <Card 
-                  className={`glass-card product-hover cursor-pointer animate-bounce-in bg-gradient-to-br ${category.color}/20 border-white/20`}
+                  className={`glass-card product-hover cursor-pointer animate-bounce-in bg-gradient-to-br ${category.color}/20 border-white/20 hover:border-white/40 transition-all duration-300`}
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <CardContent className="p-6 text-center">
-                    <div className="text-4xl mb-3 animate-float" style={{ animationDelay: `${index * 0.2}s` }}>
+                    <div className="text-4xl mb-3 animate-float hover:scale-110 transition-transform duration-300" style={{ animationDelay: `${index * 0.2}s` }}>
                       {category.icon}
                     </div>
                     <h3 className="text-sm font-semibold text-white/90 mb-2">{category.name}</h3>
@@ -258,13 +324,13 @@ const Index = () => {
       <section className="py-16 bg-black/20">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12 text-white">
-            Featured <span className="text-gradient">Products</span>
+            Featured <span className="text-gradient bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">Products</span>
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredProducts.map((product, index) => (
               <Card 
                 key={product.id} 
-                className="glass-card product-hover animate-zoom-in"
+                className="glass-card product-hover animate-zoom-in hover:scale-105 transition-transform duration-300"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <CardContent className="p-0">
@@ -276,13 +342,13 @@ const Index = () => {
                         className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
                       />
                     </Link>
-                    <Badge className="absolute top-2 left-2 bg-red-500 text-white">
+                    <Badge className="absolute top-2 left-2 bg-red-500 text-white animate-pulse">
                       {product.discount}% OFF
                     </Badge>
                     <Button
                       size="sm"
                       variant="ghost"
-                      className="absolute top-2 right-2 text-white hover:bg-white/20"
+                      className="absolute top-2 right-2 text-white hover:bg-white/20 hover:text-red-400 transition-colors duration-300"
                       onClick={() => addToWishlist(product)}
                     >
                       <Heart className="h-4 w-4" />
@@ -290,10 +356,11 @@ const Index = () => {
                   </div>
                   <div className="p-4">
                     <Link to={`/product/${product.id}`}>
-                      <h3 className="font-semibold text-white mb-2 line-clamp-2 hover:text-gradient cursor-pointer">
+                      <h3 className="font-semibold text-white mb-2 line-clamp-2 hover:text-gradient cursor-pointer transition-colors duration-300">
                         {product.name}
                       </h3>
                     </Link>
+                    <p className="text-sm text-white/60 mb-2">{product.description}</p>
                     <div className="flex items-center space-x-1 mb-2">
                       <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                       <span className="text-sm text-white/80">{product.rating}</span>
@@ -302,12 +369,11 @@ const Index = () => {
                       <span className="text-lg font-bold text-white">₹{product.price}</span>
                       <span className="text-sm text-white/60 line-through">₹{product.originalPrice}</span>
                     </div>
-                    <Button 
-                      className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
-                      onClick={() => addToCart(product)}
-                    >
-                      Add to Cart
-                    </Button>
+                    <Link to={`/product/${product.id}`}>
+                      <Button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transform hover:scale-105 transition-all duration-300">
+                        View Details
+                      </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>
@@ -321,10 +387,16 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-xl font-bold text-gradient mb-4">AKGOHI</h3>
+              <h3 className="text-xl font-bold text-gradient bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">AKGOHI</h3>
               <p className="text-white/60 mb-4">
                 Developed by Akhila Reddy - Your ultimate shopping destination with 500+ products across all categories.
               </p>
+              <div className="text-sm text-white/60 space-y-1">
+                <p>College: GPCET</p>
+                <p>Village: Hosur</p>
+                <p>Contact: 9988776655</p>
+                <p>Email: akhila@gmail.com</p>
+              </div>
             </div>
             <div>
               <h4 className="font-semibold text-white mb-4">Quick Links</h4>

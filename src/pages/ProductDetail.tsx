@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, ShoppingCart, Heart, Star, Plus, Minus, Truck, Shield, RotateCcw } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, Heart, Star, Plus, Minus, Truck, Shield, RotateCcw, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -13,8 +13,10 @@ const ProductDetail = () => {
   const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [selectedSize, setSelectedSize] = useState('');
+  const [selectedColor, setSelectedColor] = useState('');
 
-  // Mock product data
+  // Mock product data with enhanced details
   const product = {
     id: productId || '1',
     name: 'Premium Wireless Headphones',
@@ -32,7 +34,9 @@ const ProductDetail = () => {
       `https://picsum.photos/500/500?random=${productId}-3`,
       `https://picsum.photos/500/500?random=${productId}-4`
     ],
-    description: 'Experience crystal-clear audio with our premium wireless headphones. Featuring advanced noise cancellation, 30-hour battery life, and comfortable over-ear design.',
+    description: 'Experience crystal-clear audio with our premium wireless headphones. Featuring advanced noise cancellation, 30-hour battery life, and comfortable over-ear design. Perfect for music lovers and professionals alike.',
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Black', 'White', 'Blue', 'Red', 'Silver'],
     features: [
       'Active Noise Cancellation',
       '30-hour battery life',
@@ -48,14 +52,25 @@ const ProductDetail = () => {
       'Charging Time': '2 hours',
       'Connectivity': 'Bluetooth 5.0',
       'Weight': '250g'
-    }
+    },
+    material: 'Premium quality materials with soft cushioning',
+    warranty: '2 years manufacturer warranty'
   };
 
   const addToCart = () => {
+    if (!selectedSize || !selectedColor) {
+      toast({
+        title: "Please Select Options",
+        description: "Please select both size and color before adding to cart.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     for (let i = 0; i < quantity; i++) {
       addItem({
-        id: product.id,
-        name: product.name,
+        id: `${product.id}-${selectedSize}-${selectedColor}`,
+        name: `${product.name} (${selectedSize}, ${selectedColor})`,
         price: product.price,
         image: product.images[0],
         category: product.category
@@ -65,6 +80,17 @@ const ProductDetail = () => {
     toast({
       title: "Added to Cart!",
       description: `${quantity} ${product.name}(s) added to your cart.`,
+    });
+  };
+
+  const addToWishlist = () => {
+    const wishlistItems = JSON.parse(localStorage.getItem('akgohi_wishlist') || '[]');
+    const updatedWishlist = [...wishlistItems, product];
+    localStorage.setItem('akgohi_wishlist', JSON.stringify(updatedWishlist));
+    
+    toast({
+      title: "Added to Wishlist!",
+      description: `${product.name} has been added to your wishlist.`,
     });
   };
 
@@ -88,7 +114,7 @@ const ProductDetail = () => {
                 <span className="text-white">{product.name}</span>
               </div>
             </div>
-            <Link to="/" className="text-2xl font-bold text-gradient">
+            <Link to="/" className="text-2xl font-bold text-gradient bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
               AKGOHI
             </Link>
           </div>
@@ -104,7 +130,7 @@ const ProductDetail = () => {
                 <img 
                   src={product.images[selectedImage]} 
                   alt={product.name}
-                  className="w-full h-96 object-cover"
+                  className="w-full h-96 object-cover hover:scale-105 transition-transform duration-300"
                 />
               </CardContent>
             </Card>
@@ -113,7 +139,7 @@ const ProductDetail = () => {
               {product.images.map((image, index) => (
                 <Card 
                   key={index} 
-                  className={`glass-card cursor-pointer transition-all ${
+                  className={`glass-card cursor-pointer transition-all hover:scale-105 ${
                     selectedImage === index ? 'ring-2 ring-purple-500' : ''
                   }`}
                   onClick={() => setSelectedImage(index)}
@@ -156,11 +182,70 @@ const ProductDetail = () => {
               <div className="flex items-center space-x-4 mb-6">
                 <span className="text-3xl font-bold text-white">₹{product.price}</span>
                 <span className="text-xl text-white/60 line-through">₹{product.originalPrice}</span>
-                <Badge className="bg-red-500 text-white">{product.discount}% OFF</Badge>
+                <Badge className="bg-red-500 text-white animate-pulse">{product.discount}% OFF</Badge>
               </div>
 
               <p className="text-white/80 mb-6">{product.description}</p>
             </div>
+
+            {/* Size Selection */}
+            <Card className="glass-card">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold text-white mb-4">Select Size</h3>
+                <div className="grid grid-cols-4 gap-3">
+                  {product.sizes.map((size) => (
+                    <Button
+                      key={size}
+                      variant={selectedSize === size ? "default" : "outline"}
+                      className={`transition-all duration-300 ${
+                        selectedSize === size 
+                          ? 'bg-purple-500 text-white transform scale-105' 
+                          : 'border-white/30 text-white hover:bg-white/10'
+                      }`}
+                      onClick={() => setSelectedSize(size)}
+                    >
+                      {size}
+                    </Button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Color Selection */}
+            <Card className="glass-card">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold text-white mb-4">Select Color</h3>
+                <div className="flex space-x-3">
+                  {product.colors.map((color) => (
+                    <div key={color} className="relative">
+                      <Button
+                        variant="outline"
+                        className={`w-12 h-12 rounded-full p-0 border-2 transition-all duration-300 ${
+                          selectedColor === color 
+                            ? 'border-purple-400 transform scale-110' 
+                            : 'border-white/30 hover:border-white/60'
+                        }`}
+                        style={{ 
+                          backgroundColor: color.toLowerCase() === 'black' ? '#000' :
+                                          color.toLowerCase() === 'white' ? '#fff' :
+                                          color.toLowerCase() === 'blue' ? '#3b82f6' :
+                                          color.toLowerCase() === 'red' ? '#ef4444' :
+                                          color.toLowerCase() === 'silver' ? '#94a3b8' : color.toLowerCase()
+                        }}
+                        onClick={() => setSelectedColor(color)}
+                      >
+                        {selectedColor === color && (
+                          <Check className="h-4 w-4 text-white" />
+                        )}
+                      </Button>
+                      <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-white/60">
+                        {color}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Quantity and Add to Cart */}
             <Card className="glass-card">
@@ -191,9 +276,9 @@ const ProductDetail = () => {
                 <div className="space-y-3">
                   <Button 
                     size="lg" 
-                    className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                    className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transform hover:scale-105 transition-all duration-300"
                     onClick={addToCart}
-                    disabled={!product.inStock}
+                    disabled={!product.inStock || !selectedSize || !selectedColor}
                   >
                     <ShoppingCart className="h-5 w-5 mr-2" />
                     Add to Cart
@@ -202,11 +287,30 @@ const ProductDetail = () => {
                   <Button 
                     size="lg" 
                     variant="outline" 
-                    className="w-full border-white/30 text-white hover:bg-white/10"
+                    className="w-full border-white/30 text-white hover:bg-white/10 transform hover:scale-105 transition-all duration-300"
+                    onClick={addToWishlist}
                   >
                     <Heart className="h-5 w-5 mr-2" />
                     Add to Wishlist
                   </Button>
+                </div>
+
+                {(!selectedSize || !selectedColor) && (
+                  <p className="text-red-400 text-sm mt-2 text-center">
+                    Please select size and color before adding to cart
+                  </p>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Product Details */}
+            <Card className="glass-card">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold text-white mb-4">Product Details</h3>
+                <div className="space-y-2 text-white/80">
+                  <p><span className="font-medium">Material:</span> {product.material}</p>
+                  <p><span className="font-medium">Warranty:</span> {product.warranty}</p>
+                  <p><span className="font-medium">Brand:</span> {product.brand}</p>
                 </div>
               </CardContent>
             </Card>
