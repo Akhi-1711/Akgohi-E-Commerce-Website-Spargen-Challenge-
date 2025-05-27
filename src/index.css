@@ -52,13 +52,13 @@
   }
 
   body {
-    @apply bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 text-foreground min-h-screen;
+    @apply bg-gradient-to-br from-slate-50 via-gray-50 to-zinc-50 text-gray-900 min-h-screen;
   }
 }
 
 @layer components {
   .glass-card {
-    @apply backdrop-blur-xl bg-white/80 border border-gray-200 rounded-2xl shadow-xl;
+    @apply backdrop-blur-xl bg-white/90 border border-gray-200 rounded-2xl shadow-xl;
   }
   
   .neon-border {
@@ -95,29 +95,29 @@
     @apply transition-all duration-300 hover:drop-shadow-lg hover:scale-110;
   }
 
-  /* Category specific backgrounds */
+  /* Category specific backgrounds with good contrast */
   .category-electronics {
-    @apply bg-gradient-to-br from-blue-100 to-blue-200;
+    @apply bg-blue-50 text-blue-900;
   }
   
   .category-fashion {
-    @apply bg-gradient-to-br from-pink-100 to-rose-200;
+    @apply bg-pink-50 text-pink-900;
   }
   
   .category-home {
-    @apply bg-gradient-to-br from-green-100 to-emerald-200;
+    @apply bg-green-50 text-green-900;
   }
   
   .category-books {
-    @apply bg-gradient-to-br from-amber-100 to-yellow-200;
+    @apply bg-amber-50 text-amber-900;
   }
   
   .category-sports {
-    @apply bg-gradient-to-br from-orange-100 to-red-200;
+    @apply bg-orange-50 text-orange-900;
   }
   
   .category-beauty {
-    @apply bg-gradient-to-br from-purple-100 to-violet-200;
+    @apply bg-purple-50 text-purple-900;
   }
 }
 
