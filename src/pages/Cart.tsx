@@ -41,16 +41,16 @@ const Cart = () => {
 
   if (state.items.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      <div className="min-h-screen bg-gray-50">
         {/* Header */}
-        <div className="bg-black/30 backdrop-blur-md border-b border-white/10 py-6">
+        <div className="bg-white border-b border-gray-200 py-6 shadow-sm">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
-                <Link to="/" className="text-white hover:text-purple-400 transition-colors">
+                <Link to="/" className="text-gray-700 hover:text-purple-600 transition-colors">
                   <ArrowLeft className="h-6 w-6" />
                 </Link>
-                <h1 className="text-2xl font-bold text-white">Shopping Cart</h1>
+                <h1 className="text-2xl font-bold text-gray-900">Shopping Cart</h1>
               </div>
               <Link to="/" className="text-2xl font-bold text-gradient">
                 AKGOHI
@@ -62,14 +62,14 @@ const Cart = () => {
         {/* Empty Cart */}
         <div className="container mx-auto px-4 py-16">
           <div className="text-center">
-            <div className="glass-card p-12 max-w-md mx-auto">
-              <ShoppingBag className="h-24 w-24 text-white/40 mx-auto mb-6" />
-              <h2 className="text-2xl font-bold text-white mb-4">Your cart is empty</h2>
-              <p className="text-white/60 mb-8">
+            <div className="bg-white p-12 max-w-md mx-auto rounded-2xl shadow-lg border border-gray-200">
+              <ShoppingBag className="h-24 w-24 text-gray-400 mx-auto mb-6" />
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Your cart is empty</h2>
+              <p className="text-gray-600 mb-8">
                 Looks like you haven't added any items to your cart yet.
               </p>
               <Link to="/">
-                <Button size="lg" className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
+                <Button size="lg" className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
                   Start Shopping
                 </Button>
               </Link>
@@ -81,18 +81,18 @@ const Cart = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-black/30 backdrop-blur-md border-b border-white/10 py-6">
+      <div className="bg-white border-b border-gray-200 py-6 shadow-sm">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <Link to="/" className="text-white hover:text-purple-400 transition-colors">
+              <Link to="/" className="text-gray-700 hover:text-purple-600 transition-colors">
                 <ArrowLeft className="h-6 w-6" />
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-white">Shopping Cart</h1>
-                <p className="text-white/60">{state.itemCount} items in your cart</p>
+                <h1 className="text-2xl font-bold text-gray-900">Shopping Cart</h1>
+                <p className="text-gray-600">{state.itemCount} items in your cart</p>
               </div>
             </div>
             <Link to="/" className="text-2xl font-bold text-gradient">
@@ -107,11 +107,11 @@ const Cart = () => {
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-white">Cart Items</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Cart Items</h2>
               <Button 
                 variant="ghost" 
                 onClick={handleClearCart}
-                className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                className="text-red-600 hover:text-red-700 hover:bg-red-50"
               >
                 <Trash2 className="h-4 w-4 mr-2" />
                 Clear Cart
@@ -119,7 +119,7 @@ const Cart = () => {
             </div>
 
             {state.items.map((item) => (
-              <Card key={item.id} className="glass-card">
+              <Card key={item.id} className="bg-white border border-gray-200 shadow-sm">
                 <CardContent className="p-6">
                   <div className="flex items-center space-x-4">
                     <img 
@@ -129,9 +129,9 @@ const Cart = () => {
                     />
                     
                     <div className="flex-1">
-                      <h3 className="font-semibold text-white mb-1">{item.name}</h3>
-                      <p className="text-white/60 text-sm mb-2">Category: {item.category}</p>
-                      <p className="text-lg font-bold text-white">₹{item.price}</p>
+                      <h3 className="font-semibold text-gray-900 mb-1">{item.name}</h3>
+                      <p className="text-gray-600 text-sm mb-2">Category: {item.category}</p>
+                      <p className="text-lg font-bold text-gray-900">₹{item.price}</p>
                     </div>
 
                     <div className="flex items-center space-x-3">
@@ -139,12 +139,12 @@ const Cart = () => {
                         size="sm"
                         variant="ghost"
                         onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                        className="text-white hover:bg-white/10"
+                        className="text-gray-700 hover:bg-gray-100"
                       >
                         <Minus className="h-4 w-4" />
                       </Button>
                       
-                      <Badge variant="secondary" className="px-3 py-1 bg-white/10 text-white">
+                      <Badge variant="secondary" className="px-3 py-1 bg-gray-100 text-gray-900 border border-gray-300">
                         {item.quantity}
                       </Badge>
                       
@@ -152,7 +152,7 @@ const Cart = () => {
                         size="sm"
                         variant="ghost"
                         onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                        className="text-white hover:bg-white/10"
+                        className="text-gray-700 hover:bg-gray-100"
                       >
                         <Plus className="h-4 w-4" />
                       </Button>
@@ -162,7 +162,7 @@ const Cart = () => {
                       size="sm"
                       variant="ghost"
                       onClick={() => handleRemoveItem(item.id, item.name)}
-                      className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -174,28 +174,28 @@ const Cart = () => {
 
           {/* Cart Summary */}
           <div className="lg:col-span-1">
-            <Card className="glass-card sticky top-8">
+            <Card className="bg-white border border-gray-200 shadow-sm sticky top-8">
               <CardContent className="p-6">
-                <h2 className="text-xl font-semibold text-white mb-6">Order Summary</h2>
+                <h2 className="text-xl font-semibold text-gray-900 mb-6">Order Summary</h2>
                 
                 <div className="space-y-4 mb-6">
-                  <div className="flex justify-between text-white/80">
+                  <div className="flex justify-between text-gray-700">
                     <span>Subtotal ({state.itemCount} items)</span>
                     <span>₹{state.total.toFixed(2)}</span>
                   </div>
                   
-                  <div className="flex justify-between text-white/80">
+                  <div className="flex justify-between text-gray-700">
                     <span>Shipping</span>
-                    <span className="text-green-400">FREE</span>
+                    <span className="text-green-600">FREE</span>
                   </div>
                   
-                  <div className="flex justify-between text-white/80">
+                  <div className="flex justify-between text-gray-700">
                     <span>Tax</span>
                     <span>₹{(state.total * 0.18).toFixed(2)}</span>
                   </div>
                   
-                  <div className="border-t border-white/20 pt-4">
-                    <div className="flex justify-between text-xl font-bold text-white">
+                  <div className="border-t border-gray-200 pt-4">
+                    <div className="flex justify-between text-xl font-bold text-gray-900">
                       <span>Total</span>
                       <span>₹{(state.total * 1.18).toFixed(2)}</span>
                     </div>
@@ -204,20 +204,20 @@ const Cart = () => {
 
                 <div className="space-y-3">
                   <Link to="/checkout" className="block">
-                    <Button size="lg" className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
+                    <Button size="lg" className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
                       Proceed to Checkout
                     </Button>
                   </Link>
                   
                   <Link to="/" className="block">
-                    <Button size="lg" variant="outline" className="w-full border-white/30 text-white hover:bg-white/10">
+                    <Button size="lg" variant="outline" className="w-full border-gray-300 text-gray-700 hover:bg-gray-50">
                       Continue Shopping
                     </Button>
                   </Link>
                 </div>
 
-                <div className="mt-6 p-4 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-lg border border-green-500/30">
-                  <p className="text-green-400 text-sm font-medium">
+                <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
+                  <p className="text-green-700 text-sm font-medium">
                     🎉 You saved ₹{((state.total * 0.2)).toFixed(2)} on this order!
                   </p>
                 </div>
