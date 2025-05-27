@@ -16,52 +16,117 @@ const ProductDetail = () => {
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
 
-  // Enhanced product data with descriptions
-  const product = {
-    id: productId || '1',
-    name: 'Premium Wireless Headphones',
-    price: 2999,
-    originalPrice: 4999,
-    rating: 4.5,
-    reviews: 1234,
-    discount: 40,
-    inStock: true,
-    category: 'electronics',
-    brand: 'TechBrand',
-    images: [
-      `https://picsum.photos/500/500?random=${productId}-1`,
-      `https://picsum.photos/500/500?random=${productId}-2`,
-      `https://picsum.photos/500/500?random=${productId}-3`,
-      `https://picsum.photos/500/500?random=${productId}-4`
-    ],
-    description: 'Experience crystal-clear audio with our premium wireless headphones. Featuring advanced noise cancellation technology, these headphones deliver exceptional sound quality with deep bass and crisp highs. The ergonomic design ensures comfortable listening for hours, while the 30-hour battery life keeps your music playing all day. Perfect for professionals, students, and music enthusiasts who demand the best audio experience.',
-    detailedDescription: 'These premium wireless headphones are engineered for audiophiles who refuse to compromise on quality. The advanced active noise cancellation technology blocks out ambient noise, allowing you to immerse yourself completely in your music. The high-quality 40mm drivers deliver rich, detailed sound across all frequencies. The comfortable over-ear design with memory foam padding ensures you can wear them for extended periods without discomfort.',
-    sizes: ['S', 'M', 'L', 'XL'],
-    colors: ['Black', 'White', 'Blue', 'Red', 'Silver'],
-    features: [
-      'Active Noise Cancellation Technology',
-      '30-hour Extended Battery Life',
-      'Premium Comfort Design with Memory Foam',
-      'Bluetooth 5.0 Wireless Connectivity',
-      'High-Quality 40mm Audio Drivers',
-      'Quick Charge Feature - 15 min for 3 hours',
-      'Built-in Microphone for Calls',
-      'Foldable Design for Portability'
-    ],
-    specifications: {
-      'Driver Size': '40mm Dynamic',
-      'Frequency Response': '20Hz - 20kHz',
-      'Battery Life': '30 hours (ANC on), 40 hours (ANC off)',
-      'Charging Time': '2 hours (full charge)',
-      'Quick Charge': '15 minutes for 3 hours',
-      'Connectivity': 'Bluetooth 5.0, 3.5mm jack',
-      'Weight': '250g',
-      'Impedance': '32 ohms',
-      'Sensitivity': '105 dB'
+  // Enhanced product data with detailed descriptions
+  const products = {
+    '1': {
+      id: '1',
+      name: 'Premium Wireless Headphones',
+      price: 2999,
+      originalPrice: 4999,
+      rating: 4.5,
+      reviews: 1234,
+      discount: 40,
+      inStock: true,
+      category: 'electronics',
+      brand: 'TechBrand',
+      description: 'Experience crystal-clear audio with our premium wireless headphones. Featuring advanced noise cancellation technology, these headphones deliver exceptional sound quality with deep bass and crisp highs.',
+      detailedDescription: 'These premium wireless headphones are engineered for audiophiles who refuse to compromise on quality. The advanced active noise cancellation technology blocks out ambient noise, allowing you to immerse yourself completely in your music. The high-quality 40mm drivers deliver rich, detailed sound across all frequencies.',
+      features: [
+        'Active Noise Cancellation Technology',
+        '30-hour Extended Battery Life',
+        'Premium Comfort Design with Memory Foam',
+        'Bluetooth 5.0 Wireless Connectivity',
+        'High-Quality 40mm Audio Drivers',
+        'Quick Charge Feature - 15 min for 3 hours',
+        'Built-in Microphone for Calls',
+        'Foldable Design for Portability'
+      ]
     },
-    material: 'Premium quality materials with soft memory foam cushioning and durable aluminum frame',
-    warranty: '2 years manufacturer warranty with international coverage'
+    '2': {
+      id: '2',
+      name: 'Stylish Cotton T-Shirt',
+      price: 799,
+      originalPrice: 1299,
+      rating: 4.5,
+      reviews: 156,
+      discount: 38,
+      inStock: true,
+      category: 'fashion',
+      brand: 'FashionCo',
+      description: 'Comfortable and stylish cotton t-shirt available in multiple colors. Made from premium organic cotton for everyday wear.',
+      detailedDescription: 'This premium cotton t-shirt combines comfort with style. Made from 100% organic cotton, it offers breathability and softness that lasts wash after wash. The classic fit works for any occasion.',
+      features: [
+        '100% Organic Cotton Material',
+        'Pre-shrunk for Perfect Fit',
+        'Breathable and Soft Fabric',
+        'Available in Multiple Colors',
+        'Machine Washable',
+        'Reinforced Stitching',
+        'Tag-free for Comfort',
+        'Eco-friendly Production'
+      ]
+    },
+    '3': {
+      id: '3',
+      name: 'Smart Home Security Camera',
+      price: 1999,
+      originalPrice: 2999,
+      rating: 4.6,
+      reviews: 89,
+      discount: 33,
+      inStock: true,
+      category: 'electronics',
+      brand: 'SecureTech',
+      description: 'Advanced security camera with 1080p HD video, night vision, and smartphone app control. Keep your home safe 24/7.',
+      detailedDescription: 'This smart security camera provides comprehensive home monitoring with crystal-clear 1080p video quality. The advanced night vision ensures clear footage even in complete darkness.',
+      features: [
+        '1080p Full HD Video Quality',
+        'Advanced Night Vision Technology',
+        'Two-way Audio Communication',
+        'Motion Detection Alerts',
+        'Cloud Storage Available',
+        'Weather-resistant Design',
+        'Easy Mobile App Control',
+        'Wide 130° Viewing Angle'
+      ]
+    },
+    '4': {
+      id: '4',
+      name: 'Yoga Mat Premium',
+      price: 1299,
+      originalPrice: 1999,
+      rating: 4.7,
+      reviews: 234,
+      discount: 35,
+      inStock: true,
+      category: 'sports',
+      brand: 'YogaPro',
+      description: 'Non-slip yoga mat made from eco-friendly materials. Perfect for yoga, pilates, and home workouts with superior grip.',
+      detailedDescription: 'This premium yoga mat is designed for serious practitioners. The eco-friendly TPE material provides excellent grip and cushioning while being gentle on the environment.',
+      features: [
+        'Eco-friendly TPE Material',
+        'Superior Non-slip Surface',
+        'Extra Thick 6mm Cushioning',
+        'Lightweight and Portable',
+        'Easy to Clean',
+        'Alignment Lines for Poses',
+        'Carrying Strap Included',
+        'Odor-resistant Treatment'
+      ]
+    }
   };
+
+  const product = products[productId as keyof typeof products] || products['1'];
+
+  const images = [
+    `https://picsum.photos/500/500?random=${productId}-1`,
+    `https://picsum.photos/500/500?random=${productId}-2`,
+    `https://picsum.photos/500/500?random=${productId}-3`,
+    `https://picsum.photos/500/500?random=${productId}-4`
+  ];
+
+  const sizes = ['S', 'M', 'L', 'XL'];
+  const colors = ['Black', 'White', 'Blue', 'Red', 'Silver'];
 
   const addToCart = () => {
     if (!selectedSize || !selectedColor) {
@@ -78,7 +143,7 @@ const ProductDetail = () => {
         id: `${product.id}-${selectedSize}-${selectedColor}`,
         name: `${product.name} (${selectedSize}, ${selectedColor})`,
         price: product.price,
-        image: product.images[0],
+        image: images[0],
         category: product.category
       });
     }
@@ -93,12 +158,12 @@ const ProductDetail = () => {
     const wishlistItems = JSON.parse(localStorage.getItem('akgohi_wishlist') || '[]');
     const newItem = {
       ...product,
+      images,
       selectedSize,
       selectedColor,
       addedDate: new Date().toISOString()
     };
     
-    // Check if item already exists
     const existingItem = wishlistItems.find((item: any) => 
       item.id === product.id && item.selectedSize === selectedSize && item.selectedColor === selectedColor
     );
@@ -122,26 +187,26 @@ const ProductDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-100 via-yellow-200 to-yellow-300">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="bg-yellow-900/30 backdrop-blur-md border-b border-yellow-600/30 py-6">
+      <div className="bg-white border-b border-gray-200 py-6">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <Link to="/" className="text-yellow-900 hover:text-yellow-700 transition-colors transform hover:scale-110">
-                <ArrowLeft className="h-6 w-6 animate-bounce" />
+              <Link to="/" className="text-black hover:text-gray-700 transition-colors">
+                <ArrowLeft className="h-6 w-6" />
               </Link>
-              <div className="hidden md:flex items-center space-x-2 text-yellow-800">
-                <Link to="/" className="hover:text-yellow-900 transition-colors">Home</Link>
+              <div className="hidden md:flex items-center space-x-2 text-gray-600">
+                <Link to="/" className="hover:text-black transition-colors">Home</Link>
                 <span>/</span>
-                <Link to={`/category/${product.category}`} className="hover:text-yellow-900 capitalize transition-colors">
+                <Link to={`/category/${product.category}`} className="hover:text-black capitalize transition-colors">
                   {product.category}
                 </Link>
                 <span>/</span>
-                <span className="text-yellow-900 font-medium">{product.name}</span>
+                <span className="text-black font-medium">{product.name}</span>
               </div>
             </div>
-            <Link to="/" className="text-2xl font-bold text-gradient bg-gradient-to-r from-yellow-600 to-yellow-800 bg-clip-text text-transparent animate-pulse-neon">
+            <Link to="/" className="text-2xl font-bold text-black">
               AKGOHI
             </Link>
           </div>
@@ -152,22 +217,22 @@ const ProductDetail = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Product Images */}
           <div className="space-y-4">
-            <Card className="bg-yellow-50/80 backdrop-blur-xl border border-yellow-300/50 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300">
+            <Card className="bg-white border border-gray-200 rounded-lg shadow-lg">
               <CardContent className="p-0">
                 <img 
-                  src={product.images[selectedImage]} 
+                  src={images[selectedImage]} 
                   alt={product.name}
-                  className="w-full h-96 object-cover hover:scale-105 transition-transform duration-500 rounded-t-2xl"
+                  className="w-full h-96 object-cover rounded-t-lg"
                 />
               </CardContent>
             </Card>
             
             <div className="grid grid-cols-4 gap-4">
-              {product.images.map((image, index) => (
+              {images.map((image, index) => (
                 <Card 
                   key={index} 
-                  className={`bg-yellow-50/60 backdrop-blur-xl border cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg ${
-                    selectedImage === index ? 'ring-2 ring-yellow-500 shadow-lg' : 'border-yellow-300/50'
+                  className={`bg-white border cursor-pointer transition-all duration-300 hover:shadow-md ${
+                    selectedImage === index ? 'ring-2 ring-blue-500 shadow-md' : 'border-gray-200'
                   }`}
                   onClick={() => setSelectedImage(index)}
                 >
@@ -186,51 +251,51 @@ const ProductDetail = () => {
           {/* Product Details */}
           <div className="space-y-6">
             <div>
-              <Badge className="mb-2 bg-yellow-500/30 text-yellow-800 hover:bg-yellow-500/40 transition-colors">{product.brand}</Badge>
-              <h1 className="text-3xl font-bold text-yellow-900 mb-4 hover:text-yellow-700 transition-colors">{product.name}</h1>
+              <Badge className="mb-2 bg-blue-100 text-blue-800 hover:bg-blue-200">{product.brand}</Badge>
+              <h1 className="text-3xl font-bold text-black mb-4">{product.name}</h1>
               
               <div className="flex items-center space-x-4 mb-4">
                 <div className="flex items-center space-x-1">
                   {[...Array(5)].map((_, i) => (
                     <Star 
                       key={i} 
-                      className={`h-5 w-5 transition-all duration-300 hover:scale-110 ${
+                      className={`h-5 w-5 ${
                         i < Math.floor(product.rating) 
-                          ? 'fill-yellow-500 text-yellow-500 animate-pulse' 
-                          : 'text-yellow-300'
+                          ? 'fill-yellow-400 text-yellow-400' 
+                          : 'text-gray-300'
                       }`} 
                     />
                   ))}
-                  <span className="text-yellow-900 ml-2 font-medium">{product.rating}</span>
+                  <span className="text-black ml-2 font-medium">{product.rating}</span>
                 </div>
-                <span className="text-yellow-700">({product.reviews} reviews)</span>
+                <span className="text-gray-600">({product.reviews} reviews)</span>
               </div>
 
               <div className="flex items-center space-x-4 mb-6">
-                <span className="text-3xl font-bold text-yellow-900">₹{product.price}</span>
-                <span className="text-xl text-yellow-600 line-through">₹{product.originalPrice}</span>
-                <Badge className="bg-red-500 text-white animate-bounce">{product.discount}% OFF</Badge>
+                <span className="text-3xl font-bold text-black">₹{product.price}</span>
+                <span className="text-xl text-gray-500 line-through">₹{product.originalPrice}</span>
+                <Badge className="bg-red-500 text-white">{product.discount}% OFF</Badge>
               </div>
 
               <div className="space-y-4 mb-6">
-                <p className="text-yellow-800 leading-relaxed">{product.description}</p>
-                <p className="text-yellow-700 text-sm leading-relaxed">{product.detailedDescription}</p>
+                <p className="text-gray-700 leading-relaxed">{product.description}</p>
+                <p className="text-gray-600 text-sm leading-relaxed">{product.detailedDescription}</p>
               </div>
             </div>
 
             {/* Size Selection */}
-            <Card className="bg-yellow-50/80 backdrop-blur-xl border border-yellow-300/50 rounded-2xl shadow-lg">
+            <Card className="bg-white border border-gray-200 rounded-lg shadow-sm">
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-yellow-900 mb-4">Select Size *</h3>
+                <h3 className="text-lg font-semibold text-black mb-4">Select Size *</h3>
                 <div className="grid grid-cols-4 gap-3">
-                  {product.sizes.map((size) => (
+                  {sizes.map((size) => (
                     <Button
                       key={size}
                       variant={selectedSize === size ? "default" : "outline"}
                       className={`transition-all duration-300 ${
                         selectedSize === size 
-                          ? 'bg-yellow-500 text-white transform scale-105 shadow-lg' 
-                          : 'border-yellow-400 text-yellow-800 hover:bg-yellow-100 hover:border-yellow-500'
+                          ? 'bg-blue-600 text-white shadow-md' 
+                          : 'border-gray-300 text-black hover:bg-gray-50 hover:border-gray-400'
                       }`}
                       onClick={() => setSelectedSize(size)}
                     >
@@ -242,18 +307,18 @@ const ProductDetail = () => {
             </Card>
 
             {/* Color Selection */}
-            <Card className="bg-yellow-50/80 backdrop-blur-xl border border-yellow-300/50 rounded-2xl shadow-lg">
+            <Card className="bg-white border border-gray-200 rounded-lg shadow-sm">
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-yellow-900 mb-4">Select Color *</h3>
+                <h3 className="text-lg font-semibold text-black mb-4">Select Color *</h3>
                 <div className="flex space-x-3 flex-wrap gap-2">
-                  {product.colors.map((color) => (
+                  {colors.map((color) => (
                     <div key={color} className="relative">
                       <Button
                         variant="outline"
-                        className={`w-12 h-12 rounded-full p-0 border-2 transition-all duration-300 hover:scale-110 ${
+                        className={`w-12 h-12 rounded-full p-0 border-2 transition-all duration-300 ${
                           selectedColor === color 
-                            ? 'border-yellow-500 transform scale-110 shadow-lg' 
-                            : 'border-yellow-300 hover:border-yellow-400'
+                            ? 'border-blue-500 shadow-md' 
+                            : 'border-gray-300 hover:border-gray-400'
                         }`}
                         style={{ 
                           backgroundColor: color.toLowerCase() === 'black' ? '#000' :
@@ -265,10 +330,10 @@ const ProductDetail = () => {
                         onClick={() => setSelectedColor(color)}
                       >
                         {selectedColor === color && (
-                          <Check className="h-4 w-4 text-white animate-bounce" />
+                          <Check className="h-4 w-4 text-white" />
                         )}
                       </Button>
-                      <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-yellow-700 font-medium">
+                      <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-black font-medium">
                         {color}
                       </span>
                     </div>
@@ -278,25 +343,25 @@ const ProductDetail = () => {
             </Card>
 
             {/* Quantity and Add to Cart */}
-            <Card className="bg-yellow-50/80 backdrop-blur-xl border border-yellow-300/50 rounded-2xl shadow-lg">
+            <Card className="bg-white border border-gray-200 rounded-lg shadow-sm">
               <CardContent className="p-6">
                 <div className="flex items-center space-x-4 mb-6">
-                  <span className="text-yellow-900 font-medium">Quantity:</span>
+                  <span className="text-black font-medium">Quantity:</span>
                   <div className="flex items-center space-x-2">
                     <Button
                       size="sm"
                       variant="ghost"
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="text-yellow-800 hover:bg-yellow-100 hover:scale-110 transition-all duration-300"
+                      className="text-black hover:bg-gray-100"
                     >
                       <Minus className="h-4 w-4" />
                     </Button>
-                    <span className="text-yellow-900 px-4 py-2 bg-yellow-100 rounded font-medium">{quantity}</span>
+                    <span className="text-black px-4 py-2 bg-gray-100 rounded font-medium">{quantity}</span>
                     <Button
                       size="sm"
                       variant="ghost"
                       onClick={() => setQuantity(quantity + 1)}
-                      className="text-yellow-800 hover:bg-yellow-100 hover:scale-110 transition-all duration-300"
+                      className="text-black hover:bg-gray-100"
                     >
                       <Plus className="h-4 w-4" />
                     </Button>
@@ -306,60 +371,48 @@ const ProductDetail = () => {
                 <div className="space-y-3">
                   <Button 
                     size="lg" 
-                    className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 transform hover:scale-105 transition-all duration-300 text-white font-semibold shadow-lg"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg"
                     onClick={addToCart}
                     disabled={!product.inStock || !selectedSize || !selectedColor}
                   >
-                    <ShoppingCart className="h-5 w-5 mr-2 animate-bounce" />
+                    <ShoppingCart className="h-5 w-5 mr-2" />
                     Add to Cart
                   </Button>
                   
                   <Button 
                     size="lg" 
                     variant="outline" 
-                    className="w-full border-yellow-400 text-yellow-800 hover:bg-yellow-100 hover:border-yellow-500 transform hover:scale-105 transition-all duration-300"
+                    className="w-full border-gray-300 text-black hover:bg-gray-50 hover:border-gray-400"
                     onClick={addToWishlist}
                   >
-                    <Heart className="h-5 w-5 mr-2 animate-pulse" />
+                    <Heart className="h-5 w-5 mr-2" />
                     Add to Wishlist
                   </Button>
                 </div>
 
                 {(!selectedSize || !selectedColor) && (
-                  <p className="text-red-600 text-sm mt-2 text-center font-medium animate-pulse">
+                  <p className="text-red-600 text-sm mt-2 text-center font-medium">
                     Please select size and color before adding to cart
                   </p>
                 )}
               </CardContent>
             </Card>
 
-            {/* Product Details */}
-            <Card className="bg-yellow-50/80 backdrop-blur-xl border border-yellow-300/50 rounded-2xl shadow-lg">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-yellow-900 mb-4">Product Information</h3>
-                <div className="space-y-2 text-yellow-800">
-                  <p><span className="font-medium">Material:</span> {product.material}</p>
-                  <p><span className="font-medium">Warranty:</span> {product.warranty}</p>
-                  <p><span className="font-medium">Brand:</span> {product.brand}</p>
-                </div>
-              </CardContent>
-            </Card>
-
             {/* Delivery Info */}
-            <Card className="bg-yellow-50/80 backdrop-blur-xl border border-yellow-300/50 rounded-2xl shadow-lg">
+            <Card className="bg-white border border-gray-200 rounded-lg shadow-sm">
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-yellow-900 mb-4">Delivery & Returns</h3>
+                <h3 className="text-lg font-semibold text-black mb-4">Delivery & Returns</h3>
                 <div className="space-y-3">
-                  <div className="flex items-center space-x-3 text-yellow-800">
-                    <Truck className="h-5 w-5 text-green-500 animate-bounce" />
+                  <div className="flex items-center space-x-3 text-gray-700">
+                    <Truck className="h-5 w-5 text-green-600" />
                     <span>Free delivery on orders above ₹500</span>
                   </div>
-                  <div className="flex items-center space-x-3 text-yellow-800">
-                    <RotateCcw className="h-5 w-5 text-blue-500 animate-spin" />
+                  <div className="flex items-center space-x-3 text-gray-700">
+                    <RotateCcw className="h-5 w-5 text-blue-600" />
                     <span>7-day return policy</span>
                   </div>
-                  <div className="flex items-center space-x-3 text-yellow-800">
-                    <Shield className="h-5 w-5 text-yellow-600 animate-pulse" />
+                  <div className="flex items-center space-x-3 text-gray-700">
+                    <Shield className="h-5 w-5 text-purple-600" />
                     <span>1-year warranty included</span>
                   </div>
                 </div>
@@ -368,30 +421,16 @@ const ProductDetail = () => {
           </div>
         </div>
 
-        {/* Product Details Tabs */}
-        <div className="mt-12 space-y-8">
-          <Card className="bg-yellow-50/80 backdrop-blur-xl border border-yellow-300/50 rounded-2xl shadow-lg">
+        {/* Product Features */}
+        <div className="mt-12">
+          <Card className="bg-white border border-gray-200 rounded-lg shadow-sm">
             <CardContent className="p-6">
-              <h3 className="text-xl font-semibold text-yellow-900 mb-4">Key Features</h3>
+              <h3 className="text-xl font-semibold text-black mb-4">Key Features</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {product.features.map((feature, index) => (
-                  <div key={index} className="flex items-center space-x-2 hover:bg-yellow-100 p-2 rounded transition-colors">
-                    <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
-                    <span className="text-yellow-800">{feature}</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-yellow-50/80 backdrop-blur-xl border border-yellow-300/50 rounded-2xl shadow-lg">
-            <CardContent className="p-6">
-              <h3 className="text-xl font-semibold text-yellow-900 mb-4">Technical Specifications</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {Object.entries(product.specifications).map(([key, value]) => (
-                  <div key={key} className="flex justify-between py-2 border-b border-yellow-300/50 hover:bg-yellow-100 px-2 rounded transition-colors">
-                    <span className="text-yellow-700 font-medium">{key}</span>
-                    <span className="text-yellow-900">{value}</span>
+                  <div key={index} className="flex items-center space-x-2 hover:bg-gray-50 p-2 rounded transition-colors">
+                    <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                    <span className="text-gray-700">{feature}</span>
                   </div>
                 ))}
               </div>

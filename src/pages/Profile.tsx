@@ -1,18 +1,26 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, User, Package, Heart, Settings, LogOut, Edit, MapPin, Phone, Mail, Calendar, Star, ShoppingBag } from 'lucide-react';
+import { ArrowLeft, User, Package, Heart, Settings, LogOut, Edit, MapPin, Phone, Mail, Calendar, Star, ShoppingBag, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useCart } from '@/contexts/CartContext';
+import { toast } from '@/hooks/use-toast';
 
 const Profile = () => {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<any>({
+    name: 'Akhila Reddy',
+    email: 'akhila@gmail.com',
+    avatar: ''
+  });
   const [activeTab, setActiveTab] = useState('profile');
   const [wishlistItems, setWishlistItems] = useState([]);
+  const { addItem } = useCart();
+  
   const [orders, setOrders] = useState([
     {
       id: 'AKG001',
@@ -44,21 +52,53 @@ const Profile = () => {
   ]);
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('akgohi_user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
-
     const savedWishlist = localStorage.getItem('akgohi_wishlist');
     if (savedWishlist) {
-      setWishlistItems(JSON.parse(savedWishlist));
+      try {
+        const parsed = JSON.parse(savedWishlist);
+        setWishlistItems(parsed);
+      } catch (error) {
+        console.log('Error parsing wishlist:', error);
+        setWishlistItems([]);
+      }
     }
-  }, []);
+  }, [activeTab]);
 
   const handleLogout = () => {
     localStorage.removeItem('akgohi_user');
     localStorage.removeItem('akgohi_wishlist');
     setUser(null);
+  };
+
+  const removeFromWishlist = (itemToRemove: any) => {
+    const updatedWishlist = wishlistItems.filter((item: any) => 
+      !(item.id === itemToRemove.id && 
+        item.selectedSize === itemToRemove.selectedSize && 
+        item.selectedColor === itemToRemove.selectedColor)
+    );
+    
+    localStorage.setItem('akgohi_wishlist', JSON.stringify(updatedWishlist));
+    setWishlistItems(updatedWishlist);
+    
+    toast({
+      title: "Removed from Wishlist",
+      description: `${itemToRemove.name} has been removed from your wishlist.`,
+    });
+  };
+
+  const addWishlistItemToCart = (item: any) => {
+    addItem({
+      id: `${item.id}-${item.selectedSize || 'M'}-${item.selectedColor || 'Black'}`,
+      name: `${item.name}${item.selectedSize ? ` (${item.selectedSize})` : ''}${item.selectedColor ? ` (${item.selectedColor})` : ''}`,
+      price: item.price,
+      image: item.images?.[0] || `https://picsum.photos/300/300?random=${item.id}`,
+      category: item.category
+    });
+    
+    toast({
+      title: "Added to Cart!",
+      description: `${item.name} has been added to your cart.`,
+    });
   };
 
   const totalSpent = orders.reduce((sum, order) => sum + order.total, 0);
@@ -68,62 +108,62 @@ const Profile = () => {
     switch (activeTab) {
       case 'edit':
         return (
-          <Card className="bg-white/90 backdrop-blur-xl border border-blue-200 rounded-2xl shadow-lg">
+          <Card className="bg-white border border-gray-200 rounded-lg shadow-sm">
             <CardContent className="p-6">
-              <h3 className="text-xl font-semibold text-gray-900 mb-6">Edit Profile</h3>
+              <h3 className="text-xl font-semibold text-black mb-6">Edit Profile</h3>
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <Label htmlFor="firstName" className="text-gray-900">First Name</Label>
+                    <Label htmlFor="firstName" className="text-black">First Name</Label>
                     <Input 
                       id="firstName" 
                       defaultValue={user?.name?.split(' ')[0] || 'Akhila'} 
-                      className="bg-blue-50 border-blue-300 text-gray-900"
+                      className="bg-gray-50 border-gray-300 text-black"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="lastName" className="text-gray-900">Last Name</Label>
+                    <Label htmlFor="lastName" className="text-black">Last Name</Label>
                     <Input 
                       id="lastName" 
                       defaultValue={user?.name?.split(' ')[1] || 'Reddy'} 
-                      className="bg-blue-50 border-blue-300 text-gray-900"
+                      className="bg-gray-50 border-gray-300 text-black"
                     />
                   </div>
                 </div>
                 <div>
-                  <Label htmlFor="email" className="text-gray-900">Email</Label>
+                  <Label htmlFor="email" className="text-black">Email</Label>
                   <Input 
                     id="email" 
                     type="email" 
                     defaultValue={user?.email || 'akhila@gmail.com'} 
-                    className="bg-blue-50 border-blue-300 text-gray-900"
+                    className="bg-gray-50 border-gray-300 text-black"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="phone" className="text-gray-900">Phone Number</Label>
+                  <Label htmlFor="phone" className="text-black">Phone Number</Label>
                   <Input 
                     id="phone" 
                     defaultValue="+91 98765 43210" 
-                    className="bg-blue-50 border-blue-300 text-gray-900"
+                    className="bg-gray-50 border-gray-300 text-black"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="college" className="text-gray-900">College</Label>
+                  <Label htmlFor="college" className="text-black">College</Label>
                   <Input 
                     id="college" 
                     defaultValue="GPCET, Kurnool" 
-                    className="bg-blue-50 border-blue-300 text-gray-900"
+                    className="bg-gray-50 border-gray-300 text-black"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="address" className="text-gray-900">Address</Label>
+                  <Label htmlFor="address" className="text-black">Address</Label>
                   <Input 
                     id="address" 
                     defaultValue="Kurnool, Andhra Pradesh, India" 
-                    className="bg-blue-50 border-blue-300 text-gray-900"
+                    className="bg-gray-50 border-gray-300 text-black"
                   />
                 </div>
-                <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
                   Save Changes
                 </Button>
               </div>
@@ -133,40 +173,40 @@ const Profile = () => {
 
       case 'orders':
         return (
-          <Card className="bg-white/90 backdrop-blur-xl border border-blue-200 rounded-2xl shadow-lg">
+          <Card className="bg-white border border-gray-200 rounded-lg shadow-sm">
             <CardContent className="p-6">
-              <h3 className="text-xl font-semibold text-gray-900 mb-6">My Orders ({orders.length})</h3>
+              <h3 className="text-xl font-semibold text-black mb-6">My Orders ({orders.length})</h3>
               <div className="space-y-4">
                 {orders.map((order) => (
-                  <div key={order.id} className="p-4 bg-blue-50 rounded-lg border border-blue-200 hover:bg-blue-100 transition-colors">
+                  <div key={order.id} className="p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center space-x-4">
-                        <Package className="h-8 w-8 text-blue-600 animate-bounce" />
+                        <Package className="h-8 w-8 text-blue-600" />
                         <div>
-                          <h4 className="text-gray-900 font-medium">Order #{order.id}</h4>
+                          <h4 className="text-black font-medium">Order #{order.id}</h4>
                           <p className="text-gray-700 text-sm">{order.category} • {order.items} items</p>
                           <p className="text-gray-700 text-sm">Placed on {new Date(order.date).toLocaleDateString()}</p>
                           <div className="mt-1">
-                            <p className="text-gray-800 text-xs">Products: {order.products.join(', ')}</p>
+                            <p className="text-gray-600 text-xs">Products: {order.products.join(', ')}</p>
                           </div>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="text-gray-900 font-medium">₹{order.total}</p>
+                        <p className="text-black font-medium">₹{order.total}</p>
                         <Badge className={`${
-                          order.status === 'Delivered' ? 'bg-green-500/20 text-green-700' :
-                          order.status === 'Shipped' ? 'bg-blue-500/20 text-blue-700' :
-                          'bg-orange-500/20 text-orange-700'
+                          order.status === 'Delivered' ? 'bg-green-100 text-green-800' :
+                          order.status === 'Shipped' ? 'bg-blue-100 text-blue-800' :
+                          'bg-orange-100 text-orange-800'
                         }`}>
                           {order.status}
                         </Badge>
                       </div>
                     </div>
                     <div className="flex space-x-2">
-                      <Button size="sm" variant="outline" className="border-blue-400 text-blue-800 hover:bg-blue-100">
+                      <Button size="sm" variant="outline" className="border-gray-400 text-black hover:bg-gray-100">
                         Track Order
                       </Button>
-                      <Button size="sm" variant="outline" className="border-blue-400 text-blue-800 hover:bg-blue-100">
+                      <Button size="sm" variant="outline" className="border-gray-400 text-black hover:bg-gray-100">
                         View Details
                       </Button>
                     </div>
@@ -179,15 +219,15 @@ const Profile = () => {
 
       case 'wishlist':
         return (
-          <Card className="bg-white/90 backdrop-blur-xl border border-blue-200 rounded-2xl shadow-lg">
+          <Card className="bg-white border border-gray-200 rounded-lg shadow-sm">
             <CardContent className="p-6">
-              <h3 className="text-xl font-semibold text-gray-900 mb-6">My Wishlist ({wishlistItems.length} items)</h3>
+              <h3 className="text-xl font-semibold text-black mb-6">My Wishlist ({wishlistItems.length} items)</h3>
               {wishlistItems.length === 0 ? (
                 <div className="text-center py-8">
-                  <Heart className="h-16 w-16 text-pink-400 mx-auto mb-4 animate-pulse" />
-                  <p className="text-gray-700">Your wishlist is empty</p>
+                  <Heart className="h-16 w-16 text-pink-400 mx-auto mb-4" />
+                  <p className="text-gray-700 mb-4">Your wishlist is empty</p>
                   <Link to="/">
-                    <Button className="mt-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+                    <Button className="bg-blue-600 hover:bg-blue-700 text-white">
                       Start Shopping
                     </Button>
                   </Link>
@@ -195,18 +235,34 @@ const Profile = () => {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {wishlistItems.map((item: any, index) => (
-                    <Card key={index} className="bg-pink-50 border border-pink-200 hover:shadow-lg transition-all duration-300">
+                    <Card key={index} className="bg-white border border-gray-200 hover:shadow-lg transition-all duration-300">
                       <CardContent className="p-4">
-                        <img 
-                          src={item.images?.[0] || `https://picsum.photos/200/200?random=${index}`} 
-                          alt={item.name || 'Wishlist item'}
-                          className="w-full h-40 object-cover rounded mb-3"
-                        />
-                        <h4 className="text-gray-900 font-medium mb-2">{item.name || 'Product Name'}</h4>
-                        <p className="text-lg font-bold text-gray-900">₹{item.price || '999'}</p>
-                        {item.selectedSize && <p className="text-sm text-gray-700">Size: {item.selectedSize}</p>}
-                        {item.selectedColor && <p className="text-sm text-gray-700">Color: {item.selectedColor}</p>}
-                        <Button size="sm" className="w-full mt-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+                        <div className="relative">
+                          <img 
+                            src={item.images?.[0] || `https://picsum.photos/300/300?random=${item.id}`} 
+                            alt={item.name || 'Wishlist item'}
+                            className="w-full h-40 object-cover rounded mb-3"
+                          />
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="absolute top-2 right-2 bg-white/80 hover:bg-white text-red-500 hover:text-red-600"
+                            onClick={() => removeFromWishlist(item)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <h4 className="text-black font-medium mb-2 line-clamp-2">{item.name || 'Product Name'}</h4>
+                        <p className="text-lg font-bold text-black mb-2">₹{item.price || '999'}</p>
+                        {item.selectedSize && <p className="text-sm text-gray-600">Size: {item.selectedSize}</p>}
+                        {item.selectedColor && <p className="text-sm text-gray-600">Color: {item.selectedColor}</p>}
+                        <p className="text-xs text-gray-500 mb-3">Added: {new Date(item.addedDate).toLocaleDateString()}</p>
+                        <Button 
+                          size="sm" 
+                          className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                          onClick={() => addWishlistItemToCart(item)}
+                        >
+                          <ShoppingBag className="h-4 w-4 mr-2" />
                           Add to Cart
                         </Button>
                       </CardContent>
@@ -220,14 +276,14 @@ const Profile = () => {
 
       case 'settings':
         return (
-          <Card className="bg-white/90 backdrop-blur-xl border border-blue-200 rounded-2xl shadow-lg">
+          <Card className="bg-white border border-gray-200 rounded-lg shadow-sm">
             <CardContent className="p-6">
-              <h3 className="text-xl font-semibold text-gray-900 mb-6">Settings</h3>
+              <h3 className="text-xl font-semibold text-black mb-6">Settings</h3>
               <div className="space-y-6">
                 <div className="flex items-center justify-between p-4 bg-purple-50 rounded-lg">
                   <div>
-                    <h4 className="text-gray-900 font-medium">Email Notifications</h4>
-                    <p className="text-gray-700 text-sm">Receive updates about your orders and promotions</p>
+                    <h4 className="text-black font-medium">Email Notifications</h4>
+                    <p className="text-gray-600 text-sm">Receive updates about your orders and promotions</p>
                   </div>
                   <Button variant="outline" className="border-purple-400 text-purple-800 hover:bg-purple-100">
                     Configure
@@ -235,8 +291,8 @@ const Profile = () => {
                 </div>
                 <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg">
                   <div>
-                    <h4 className="text-gray-900 font-medium">Privacy Settings</h4>
-                    <p className="text-gray-700 text-sm">Manage your data and privacy preferences</p>
+                    <h4 className="text-black font-medium">Privacy Settings</h4>
+                    <p className="text-gray-600 text-sm">Manage your data and privacy preferences</p>
                   </div>
                   <Button variant="outline" className="border-green-400 text-green-800 hover:bg-green-100">
                     Manage
@@ -244,8 +300,8 @@ const Profile = () => {
                 </div>
                 <div className="flex items-center justify-between p-4 bg-orange-50 rounded-lg">
                   <div>
-                    <h4 className="text-gray-900 font-medium">Payment Methods</h4>
-                    <p className="text-gray-700 text-sm">Add or remove payment methods</p>
+                    <h4 className="text-black font-medium">Payment Methods</h4>
+                    <p className="text-gray-600 text-sm">Add or remove payment methods</p>
                   </div>
                   <Button variant="outline" className="border-orange-400 text-orange-800 hover:bg-orange-100">
                     Edit
@@ -253,8 +309,8 @@ const Profile = () => {
                 </div>
                 <div className="flex items-center justify-between p-4 bg-amber-50 rounded-lg">
                   <div>
-                    <h4 className="text-gray-900 font-medium">Language & Region</h4>
-                    <p className="text-gray-700 text-sm">Change your language and currency preferences</p>
+                    <h4 className="text-black font-medium">Language & Region</h4>
+                    <p className="text-gray-600 text-sm">Change your language and currency preferences</p>
                   </div>
                   <Button variant="outline" className="border-amber-400 text-amber-800 hover:bg-amber-100">
                     Change
@@ -269,33 +325,33 @@ const Profile = () => {
         return (
           <div className="space-y-8">
             {/* Account Information */}
-            <Card className="bg-white/90 backdrop-blur-xl border border-blue-200 rounded-2xl shadow-lg">
+            <Card className="bg-white border border-gray-200 rounded-lg shadow-sm">
               <CardContent className="p-6">
-                <h3 className="text-xl font-semibold text-gray-900 mb-6">Account Information</h3>
+                <h3 className="text-xl font-semibold text-black mb-6">Account Information</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-4">
                     <div className="flex items-center space-x-3">
-                      <Mail className="h-5 w-5 text-blue-600 animate-bounce" />
+                      <Mail className="h-5 w-5 text-blue-600" />
                       <div>
-                        <p className="text-gray-700 text-sm">Email</p>
-                        <p className="text-gray-900">{user?.email}</p>
+                        <p className="text-gray-600 text-sm">Email</p>
+                        <p className="text-black">{user?.email}</p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <MapPin className="h-5 w-5 text-green-600 animate-pulse" />
+                      <MapPin className="h-5 w-5 text-green-600" />
                       <div>
-                        <p className="text-gray-700 text-sm">Location</p>
-                        <p className="text-gray-900">Kurnool, Andhra Pradesh</p>
+                        <p className="text-gray-600 text-sm">Location</p>
+                        <p className="text-black">Kurnool, Andhra Pradesh</p>
                       </div>
                     </div>
                   </div>
                   
                   <div className="space-y-4">
                     <div className="flex items-center space-x-3">
-                      <Calendar className="h-5 w-5 text-purple-600 animate-bounce" />
+                      <Calendar className="h-5 w-5 text-purple-600" />
                       <div>
-                        <p className="text-gray-700 text-sm">Member Since</p>
-                        <p className="text-gray-900">December 2024</p>
+                        <p className="text-gray-600 text-sm">Member Since</p>
+                        <p className="text-black">December 2024</p>
                       </div>
                     </div>
                   </div>
@@ -304,26 +360,26 @@ const Profile = () => {
             </Card>
 
             {/* Shopping Stats */}
-            <Card className="bg-white/90 backdrop-blur-xl border border-blue-200 rounded-2xl shadow-lg">
+            <Card className="bg-white border border-gray-200 rounded-lg shadow-sm">
               <CardContent className="p-6">
-                <h3 className="text-xl font-semibold text-gray-900 mb-6">Shopping Statistics</h3>
+                <h3 className="text-xl font-semibold text-black mb-6">Shopping Statistics</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="text-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors cursor-pointer hover:scale-105 transform duration-300" onClick={() => setActiveTab('orders')}>
-                    <ShoppingBag className="h-8 w-8 text-blue-600 mx-auto mb-2 animate-bounce" />
+                  <div className="text-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors cursor-pointer" onClick={() => setActiveTab('orders')}>
+                    <ShoppingBag className="h-8 w-8 text-blue-600 mx-auto mb-2" />
                     <p className="text-2xl font-bold text-blue-700">{orders.length}</p>
                     <p className="text-blue-700 text-sm">Total Orders</p>
                   </div>
-                  <div className="text-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors cursor-pointer hover:scale-105 transform duration-300">
+                  <div className="text-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors cursor-pointer">
                     <p className="text-2xl font-bold text-green-700">₹{totalSpent.toLocaleString()}</p>
                     <p className="text-green-700 text-sm">Total Spent</p>
                   </div>
-                  <div className="text-center p-4 bg-pink-50 rounded-lg hover:bg-pink-100 transition-colors cursor-pointer hover:scale-105 transform duration-300" onClick={() => setActiveTab('wishlist')}>
-                    <Heart className="h-8 w-8 text-pink-600 mx-auto mb-2 animate-pulse" />
+                  <div className="text-center p-4 bg-pink-50 rounded-lg hover:bg-pink-100 transition-colors cursor-pointer" onClick={() => setActiveTab('wishlist')}>
+                    <Heart className="h-8 w-8 text-pink-600 mx-auto mb-2" />
                     <p className="text-2xl font-bold text-pink-700">{wishlistItems.length}</p>
                     <p className="text-pink-700 text-sm">Wishlist Items</p>
                   </div>
-                  <div className="text-center p-4 bg-amber-50 rounded-lg hover:bg-amber-100 transition-colors cursor-pointer hover:scale-105 transform duration-300">
-                    <Star className="h-8 w-8 text-amber-600 mx-auto mb-2 animate-spin" />
+                  <div className="text-center p-4 bg-amber-50 rounded-lg hover:bg-amber-100 transition-colors cursor-pointer">
+                    <Star className="h-8 w-8 text-amber-600 mx-auto mb-2" />
                     <p className="text-2xl font-bold text-amber-700">{avgRating}</p>
                     <p className="text-amber-700 text-sm">Avg Rating</p>
                   </div>
@@ -335,32 +391,19 @@ const Profile = () => {
     }
   };
 
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
-        <div className="text-center text-gray-900">
-          <h1 className="text-4xl font-bold mb-4">Please Login</h1>
-          <Link to="/" className="text-blue-700 hover:text-blue-800">
-            ← Back to Home
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-blue-900/20 backdrop-blur-md border-b border-blue-600/30 py-6">
+      <div className="bg-white border-b border-gray-200 py-6">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <Link to="/" className="text-gray-900 hover:text-blue-700 transition-colors transform hover:scale-110">
-                <ArrowLeft className="h-6 w-6 animate-bounce" />
+              <Link to="/" className="text-black hover:text-gray-700 transition-colors">
+                <ArrowLeft className="h-6 w-6" />
               </Link>
-              <h1 className="text-2xl font-bold text-gray-900">My Profile</h1>
+              <h1 className="text-2xl font-bold text-black">My Profile</h1>
             </div>
-            <Link to="/" className="text-2xl font-bold text-gradient bg-gradient-to-r from-blue-600 to-purple-800 bg-clip-text text-transparent animate-pulse-neon">
+            <Link to="/" className="text-2xl font-bold text-black">
               AKGOHI
             </Link>
           </div>
@@ -371,53 +414,69 @@ const Profile = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Profile Sidebar */}
           <div className="md:col-span-1">
-            <Card className="bg-white/90 backdrop-blur-xl border border-blue-200 rounded-2xl shadow-lg">
+            <Card className="bg-white border border-gray-200 rounded-lg shadow-sm">
               <CardContent className="p-6 text-center">
                 <Avatar className="h-24 w-24 mx-auto mb-4">
                   <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-600 text-white text-2xl">
+                  <AvatarFallback className="bg-blue-600 text-white text-2xl">
                     {user.name.charAt(0).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 
-                <h2 className="text-xl font-bold text-gray-900 mb-1">{user.name}</h2>
-                <p className="text-gray-700 text-sm mb-4">GPCET, Kurnool</p>
+                <h2 className="text-xl font-bold text-black mb-1">{user.name}</h2>
+                <p className="text-gray-600 text-sm mb-4">GPCET, Kurnool</p>
                 
-                <Badge className="bg-gradient-to-r from-blue-500 to-purple-600 text-white mb-6">
+                <Badge className="bg-blue-600 text-white mb-6">
                   Premium Customer
                 </Badge>
 
                 <div className="space-y-2">
                   <Button 
                     variant={activeTab === 'edit' ? 'default' : 'ghost'} 
-                    className="w-full justify-start text-gray-900 hover:bg-blue-100 data-[state=active]:bg-blue-500 data-[state=active]:text-white"
+                    className={`w-full justify-start ${
+                      activeTab === 'edit' 
+                        ? 'bg-blue-600 text-white' 
+                        : 'text-black hover:bg-gray-100'
+                    }`}
                     onClick={() => setActiveTab('edit')}
                   >
-                    <Edit className="h-4 w-4 mr-2 animate-pulse" />
+                    <Edit className="h-4 w-4 mr-2" />
                     Edit Profile
                   </Button>
                   <Button 
                     variant={activeTab === 'orders' ? 'default' : 'ghost'} 
-                    className="w-full justify-start text-gray-900 hover:bg-blue-100 data-[state=active]:bg-blue-500 data-[state=active]:text-white"
+                    className={`w-full justify-start ${
+                      activeTab === 'orders' 
+                        ? 'bg-blue-600 text-white' 
+                        : 'text-black hover:bg-gray-100'
+                    }`}
                     onClick={() => setActiveTab('orders')}
                   >
-                    <Package className="h-4 w-4 mr-2 animate-bounce" />
+                    <Package className="h-4 w-4 mr-2" />
                     Orders
                   </Button>
                   <Button 
                     variant={activeTab === 'wishlist' ? 'default' : 'ghost'} 
-                    className="w-full justify-start text-gray-900 hover:bg-blue-100 data-[state=active]:bg-blue-500 data-[state=active]:text-white"
+                    className={`w-full justify-start ${
+                      activeTab === 'wishlist' 
+                        ? 'bg-blue-600 text-white' 
+                        : 'text-black hover:bg-gray-100'
+                    }`}
                     onClick={() => setActiveTab('wishlist')}
                   >
-                    <Heart className="h-4 w-4 mr-2 animate-pulse" />
+                    <Heart className="h-4 w-4 mr-2" />
                     Wishlist
                   </Button>
                   <Button 
                     variant={activeTab === 'settings' ? 'default' : 'ghost'} 
-                    className="w-full justify-start text-gray-900 hover:bg-blue-100 data-[state=active]:bg-blue-500 data-[state=active]:text-white"
+                    className={`w-full justify-start ${
+                      activeTab === 'settings' 
+                        ? 'bg-blue-600 text-white' 
+                        : 'text-black hover:bg-gray-100'
+                    }`}
                     onClick={() => setActiveTab('settings')}
                   >
-                    <Settings className="h-4 w-4 mr-2 animate-spin" />
+                    <Settings className="h-4 w-4 mr-2" />
                     Settings
                   </Button>
                   <Button 
