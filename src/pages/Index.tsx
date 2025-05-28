@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, ShoppingCart, User, Heart, Star, ArrowRight, Sparkles, Gift, Truck, Shield, RotateCcw, Download } from 'lucide-react';
@@ -16,12 +17,32 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const categories = [
-    { id: 'electronics', name: 'Electronics', icon: '📱', count: 120, color: 'bg-blue-500' },
-    { id: 'fashion', name: 'Fashion', icon: '👕', count: 85, color: 'bg-pink-500' },
-    { id: 'home', name: 'Home & Garden', icon: '🏠', count: 95, color: 'bg-green-500' },
+    { id: 'apparel', name: 'Apparel (Clothing)', icon: '👕', count: 120, color: 'bg-pink-500' },
     { id: 'books', name: 'Books', icon: '📚', count: 200, color: 'bg-amber-500' },
-    { id: 'sports', name: 'Sports', icon: '⚽', count: 75, color: 'bg-orange-500' },
-    { id: 'beauty', name: 'Beauty', icon: '💄', count: 60, color: 'bg-purple-500' }
+    { id: 'cosmetics', name: 'Cosmetics', icon: '💄', count: 60, color: 'bg-purple-500' },
+    { id: 'digital', name: 'Digital Gadgets', icon: '📱', count: 85, color: 'bg-cyan-500' },
+    { id: 'electronics', name: 'Electronics', icon: '⚡', count: 150, color: 'bg-blue-500' },
+    { id: 'footwear', name: 'Footwear', icon: '👟', count: 95, color: 'bg-indigo-500' },
+    { id: 'groceries', name: 'Groceries', icon: '🛒', count: 180, color: 'bg-green-500' },
+    { id: 'home', name: 'Home Decor', icon: '🏠', count: 110, color: 'bg-orange-500' },
+    { id: 'icecream', name: 'Ice Cream & Desserts', icon: '🍦', count: 45, color: 'bg-pink-400' },
+    { id: 'jewelry', name: 'Jewelry', icon: '💎', count: 75, color: 'bg-yellow-500' },
+    { id: 'kitchen', name: 'Kitchen Appliances', icon: '🍳', count: 90, color: 'bg-red-500' },
+    { id: 'laptops', name: 'Laptops & Accessories', icon: '💻', count: 65, color: 'bg-slate-500' },
+    { id: 'mobiles', name: 'Mobiles & Tablets', icon: '📱', count: 125, color: 'bg-blue-600' },
+    { id: 'nutrition', name: 'Nutrition & Health', icon: '🏥', count: 80, color: 'bg-emerald-500' },
+    { id: 'organic', name: 'Organic Food', icon: '🌱', count: 100, color: 'bg-lime-500' },
+    { id: 'pets', name: 'Pet Supplies', icon: '🐕', count: 70, color: 'bg-amber-600' },
+    { id: 'quickmeals', name: 'Quick Meals (Ready-to-eat)', icon: '🍕', count: 55, color: 'bg-orange-600' },
+    { id: 'ridegear', name: 'Ride Gear & Auto Accessories', icon: '🏍️', count: 85, color: 'bg-gray-600' },
+    { id: 'stationery', name: 'Stationery & Office Supplies', icon: '📝', count: 90, color: 'bg-blue-400' },
+    { id: 'toys', name: 'Toys & Games', icon: '🎮', count: 120, color: 'bg-purple-600' },
+    { id: 'underwear', name: 'Underwear & Loungewear', icon: '👙', count: 65, color: 'bg-rose-400' },
+    { id: 'vegetables', name: 'Vegetables & Fruits', icon: '🥕', count: 140, color: 'bg-green-600' },
+    { id: 'watches', name: 'Watches', icon: '⌚', count: 85, color: 'bg-gray-700' },
+    { id: 'xtreme', name: 'Xtreme Sports Gear', icon: '🏂', count: 60, color: 'bg-red-600' },
+    { id: 'yoga', name: 'Yoga Products', icon: '🧘', count: 55, color: 'bg-violet-500' },
+    { id: 'zipwear', name: 'Zip Wearables (Smartwear)', icon: '⌚', count: 40, color: 'bg-teal-500' }
   ];
 
   const featuredProducts = [
@@ -30,48 +51,48 @@ const Index = () => {
       name: 'Premium Wireless Headphones',
       price: 2999,
       originalPrice: 4999,
-      image: 'https://picsum.photos/300/300?random=1',
+      image: 'https://picsum.photos/300/300?random=electronics-1',
       rating: 4.8,
       reviews: 324,
       discount: 40,
       category: 'electronics',
-      description: 'High-quality wireless headphones with noise cancellation and 30-hour battery life. Perfect for music lovers and professionals.'
+      description: 'High-quality wireless headphones with active noise cancellation, 30-hour battery life, and premium comfort design. Perfect for music lovers and professionals who demand superior audio quality.'
     },
     {
       id: '2',
-      name: 'Stylish Cotton T-Shirt',
+      name: 'Organic Cotton T-Shirt',
       price: 799,
       originalPrice: 1299,
-      image: 'https://picsum.photos/300/300?random=2',
+      image: 'https://picsum.photos/300/300?random=apparel-1',
       rating: 4.5,
       reviews: 156,
       discount: 38,
-      category: 'fashion',
-      description: 'Comfortable and stylish cotton t-shirt available in multiple colors. Made from premium organic cotton for everyday wear.'
+      category: 'apparel',
+      description: '100% organic cotton t-shirt with pre-shrunk fabric, breathable material, and eco-friendly production. Available in multiple colors with reinforced stitching for durability.'
     },
     {
       id: '3',
-      name: 'Smart Home Security Camera',
-      price: 1999,
-      originalPrice: 2999,
-      image: 'https://picsum.photos/300/300?random=3',
+      name: 'Fresh Organic Apples (1kg)',
+      price: 199,
+      originalPrice: 299,
+      image: 'https://picsum.photos/300/300?random=organic-1',
       rating: 4.6,
       reviews: 89,
       discount: 33,
-      category: 'electronics',
-      description: 'Advanced security camera with 1080p HD video, night vision, and smartphone app control. Keep your home safe 24/7.'
+      category: 'organic',
+      description: 'Premium quality organic apples grown without pesticides. Rich in fiber, vitamins, and antioxidants. Hand-picked for freshness and delivered directly from farm to your doorstep.'
     },
     {
       id: '4',
-      name: 'Yoga Mat Premium',
+      name: 'Professional Yoga Mat',
       price: 1299,
       originalPrice: 1999,
-      image: 'https://picsum.photos/300/300?random=4',
+      image: 'https://picsum.photos/300/300?random=yoga-1',
       rating: 4.7,
       reviews: 234,
       discount: 35,
-      category: 'sports',
-      description: 'Non-slip yoga mat made from eco-friendly materials. Perfect for yoga, pilates, and home workouts with superior grip.'
+      category: 'yoga',
+      description: 'Eco-friendly TPE yoga mat with superior non-slip surface, extra thick 6mm cushioning, and alignment lines. Lightweight, portable, and includes carrying strap.'
     }
   ];
 
@@ -91,25 +112,34 @@ const Index = () => {
   };
 
   const addToWishlist = (product: any) => {
-    const wishlistItems = JSON.parse(localStorage.getItem('akgohi_wishlist') || '[]');
-    const existingItem = wishlistItems.find((item: any) => item.id === product.id);
-    
-    if (existingItem) {
+    try {
+      const wishlistItems = JSON.parse(localStorage.getItem('akgohi_wishlist') || '[]');
+      const existingItem = wishlistItems.find((item: any) => item.id === product.id);
+      
+      if (existingItem) {
+        toast({
+          title: "Already in Wishlist",
+          description: "This item is already in your wishlist.",
+          variant: "destructive"
+        });
+        return;
+      }
+      
+      const updatedWishlist = [...wishlistItems, { ...product, addedDate: new Date().toISOString() }];
+      localStorage.setItem('akgohi_wishlist', JSON.stringify(updatedWishlist));
+      
       toast({
-        title: "Already in Wishlist",
-        description: "This item is already in your wishlist.",
+        title: "Added to Wishlist!",
+        description: `${product.name} has been added to your wishlist.`,
+      });
+    } catch (error) {
+      console.error('Error adding to wishlist:', error);
+      toast({
+        title: "Error",
+        description: "Failed to add item to wishlist.",
         variant: "destructive"
       });
-      return;
     }
-    
-    const updatedWishlist = [...wishlistItems, { ...product, addedDate: new Date().toISOString() }];
-    localStorage.setItem('akgohi_wishlist', JSON.stringify(updatedWishlist));
-    
-    toast({
-      title: "Added to Wishlist!",
-      description: `${product.name} has been added to your wishlist.`,
-    });
   };
 
   const openAuth = (mode: 'login' | 'signup') => {
@@ -145,6 +175,13 @@ const Index = () => {
                 Login
               </Button>
               
+              <Link to="/wishlist">
+                <Button variant="ghost" className="text-black hover:bg-gray-100">
+                  <Heart className="h-5 w-5 mr-1" />
+                  Wishlist
+                </Button>
+              </Link>
+              
               <Link to="/cart">
                 <Button variant="ghost" className="relative text-black hover:bg-gray-100">
                   <ShoppingCart className="h-5 w-5" />
@@ -153,6 +190,12 @@ const Index = () => {
                       {state.itemCount}
                     </Badge>
                   )}
+                </Button>
+              </Link>
+
+              <Link to="/admin">
+                <Button variant="ghost" className="text-black hover:bg-gray-100">
+                  Admin
                 </Button>
               </Link>
             </div>
@@ -180,15 +223,15 @@ const Index = () => {
               Welcome to <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">AKGOHI</span>
             </h1>
             <p className="text-xl text-gray-700 mb-8 leading-relaxed">
-              Discover amazing products at unbeatable prices. Your ultimate shopping destination with premium quality and fast delivery.
+              Your Ultimate Shopping Destination
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 text-lg transform hover:scale-105 transition-all duration-300">
                 <Sparkles className="h-5 w-5 mr-2" />
                 Start Shopping
               </Button>
-              <Button size="lg" variant="outline" className="border-2 border-green-600 text-green-700 hover:bg-green-600 hover:text-white bg-white px-8 py-3 text-lg transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
-                <Download className="h-5 w-5 mr-2" />
+              <Button size="lg" variant="outline" className="border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-600 hover:text-white bg-white px-8 py-3 text-lg transform hover:scale-110 transition-all duration-500 shadow-lg hover:shadow-2xl animate-pulse">
+                <Download className="h-5 w-5 mr-2 animate-bounce" />
                 Download Now
               </Button>
             </div>
@@ -199,15 +242,15 @@ const Index = () => {
       {/* Categories */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-black mb-12">Shop by Category</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+          <h2 className="text-3xl font-bold text-center text-black mb-12">Shop by Category (A-Z)</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
             {categories.map((category) => (
               <Link key={category.id} to={`/category/${category.id}`}>
                 <Card className="bg-white border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:scale-105">
                   <CardContent className="p-6 text-center">
                     <div className="text-4xl mb-3">{category.icon}</div>
-                    <h3 className="font-semibold text-black mb-2">{category.name}</h3>
-                    <p className="text-sm text-gray-600">{category.count} items</p>
+                    <h3 className="font-semibold text-black mb-2 text-sm">{category.name}</h3>
+                    <p className="text-xs text-gray-600">{category.count} items</p>
                   </CardContent>
                 </Card>
               </Link>
@@ -335,7 +378,6 @@ const Index = () => {
             <div>
               <h3 className="text-2xl font-bold mb-4">AKGOHI</h3>
               <p className="text-gray-300 mb-4">Your Ultimate Shopping Destination</p>
-              <p className="text-gray-400 text-sm">Developed by Akhila Reddy</p>
             </div>
             
             <div>
@@ -343,7 +385,7 @@ const Index = () => {
               <ul className="space-y-2">
                 <li><Link to="/" className="text-gray-300 hover:text-white transition-colors">Home</Link></li>
                 <li><Link to="/category/electronics" className="text-gray-300 hover:text-white transition-colors">Electronics</Link></li>
-                <li><Link to="/category/fashion" className="text-gray-300 hover:text-white transition-colors">Fashion</Link></li>
+                <li><Link to="/category/apparel" className="text-gray-300 hover:text-white transition-colors">Fashion</Link></li>
                 <li><Link to="/category/books" className="text-gray-300 hover:text-white transition-colors">Books</Link></li>
               </ul>
             </div>
@@ -351,19 +393,19 @@ const Index = () => {
             <div>
               <h4 className="font-semibold mb-4">Customer Service</h4>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Contact Us</a></li>
-                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">FAQ</a></li>
-                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Shipping Info</a></li>
-                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Returns</a></li>
+                <li><Link to="/contact" className="text-gray-300 hover:text-white transition-colors">Contact Us</Link></li>
+                <li><Link to="/faq" className="text-gray-300 hover:text-white transition-colors">FAQ</Link></li>
+                <li><Link to="/shipping" className="text-gray-300 hover:text-white transition-colors">Shipping Info</Link></li>
+                <li><Link to="/returns" className="text-gray-300 hover:text-white transition-colors">Returns</Link></li>
               </ul>
             </div>
             
             <div>
               <h4 className="font-semibold mb-4">Follow Us</h4>
               <div className="flex space-x-4">
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">Facebook</a>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">Twitter</a>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">Instagram</a>
+                <a href="https://www.facebook.com/login" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors">Facebook</a>
+                <a href="https://www.twitter.com/login" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors">Twitter</a>
+                <a href="https://www.instagram.com/login" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors">Instagram</a>
               </div>
             </div>
           </div>
