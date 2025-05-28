@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, ShoppingCart, User, Heart, Star, ArrowRight, Sparkles, Gift, Truck, Shield, RotateCcw, Download } from 'lucide-react';
@@ -7,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useCart } from '@/contexts/CartContext';
-import { AuthModal } from '@/components/AuthModal';
+import AuthModal from '@/components/AuthModal';
 import { toast } from '@/hooks/use-toast';
 
 const Index = () => {
@@ -188,8 +187,8 @@ const Index = () => {
                 <Sparkles className="h-5 w-5 mr-2" />
                 Start Shopping
               </Button>
-              <Button size="lg" variant="outline" className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-3 text-lg transform hover:scale-105 transition-all duration-300">
-                <Download className="h-5 w-5 mr-2 animate-bounce" />
+              <Button size="lg" variant="outline" className="border-2 border-green-600 text-green-700 hover:bg-green-600 hover:text-white bg-white px-8 py-3 text-lg transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+                <Download className="h-5 w-5 mr-2" />
                 Download Now
               </Button>
             </div>
@@ -378,7 +377,7 @@ const Index = () => {
       <AuthModal 
         isOpen={showAuthModal} 
         onClose={() => setShowAuthModal(false)} 
-        mode={authMode}
+        onAuthSuccess={() => {}}
       />
     </div>
   );
