@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ShoppingCart, Heart, Star, Filter, Grid, List, ArrowLeft } from 'lucide-react';
@@ -9,55 +8,103 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useCart } from '@/contexts/CartContext';
 import { toast } from '@/hooks/use-toast';
 
-// Categories data
+// Categories data with image keywords
 const categories = {
-  'apparel': { name: 'Apparel', icon: '👕', color: 'from-pink-500 to-rose-500' },
-  'books': { name: 'Books', icon: '📚', color: 'from-blue-500 to-cyan-500' },
-  'cosmetics': { name: 'Cosmetics', icon: '💄', color: 'from-purple-500 to-pink-500' },
-  'digital': { name: 'Digital Gadgets', icon: '📱', color: 'from-green-500 to-emerald-500' },
-  'electronics': { name: 'Electronics', icon: '⚡', color: 'from-yellow-500 to-orange-500' },
-  'footwear': { name: 'Footwear', icon: '👟', color: 'from-indigo-500 to-purple-500' },
-  'groceries': { name: 'Groceries', icon: '🛒', color: 'from-green-500 to-teal-500' },
-  'home': { name: 'Home Decor', icon: '🏠', color: 'from-orange-500 to-red-500' },
-  'icecream': { name: 'Ice Cream & Desserts', icon: '🍦', color: 'from-pink-500 to-purple-500' },
-  'jewelry': { name: 'Jewelry', icon: '💎', color: 'from-yellow-500 to-gold-500' },
-  'kitchen': { name: 'Kitchen Appliances', icon: '🍳', color: 'from-red-500 to-pink-500' },
-  'laptops': { name: 'Laptops & Accessories', icon: '💻', color: 'from-blue-500 to-purple-500' },
-  'mobiles': { name: 'Mobiles & Tablets', icon: '📱', color: 'from-cyan-500 to-blue-500' },
-  'nutrition': { name: 'Nutrition & Health', icon: '🏥', color: 'from-green-500 to-lime-500' },
-  'organic': { name: 'Organic Food', icon: '🌱', color: 'from-green-500 to-emerald-500' },
-  'pets': { name: 'Pet Supplies', icon: '🐕', color: 'from-brown-500 to-amber-500' },
-  'quickmeals': { name: 'Quick Meals', icon: '🍕', color: 'from-orange-500 to-red-500' },
-  'ridegear': { name: 'Ride Gear & Auto', icon: '🏍️', color: 'from-gray-500 to-slate-500' },
-  'stationery': { name: 'Stationery & Office', icon: '📝', color: 'from-blue-500 to-indigo-500' },
-  'toys': { name: 'Toys & Games', icon: '🎮', color: 'from-purple-500 to-pink-500' },
-  'underwear': { name: 'Underwear & Loungewear', icon: '👙', color: 'from-pink-500 to-rose-500' },
-  'vegetables': { name: 'Vegetables & Fruits', icon: '🥕', color: 'from-green-500 to-yellow-500' },
-  'watches': { name: 'Watches', icon: '⌚', color: 'from-gray-500 to-blue-500' },
-  'xtreme': { name: 'Xtreme Sports Gear', icon: '🏂', color: 'from-red-500 to-orange-500' },
-  'yoga': { name: 'Yoga Products', icon: '🧘', color: 'from-purple-500 to-indigo-500' },
-  'zipwear': { name: 'Zip Wearables (Smartwear)', icon: '⌚', color: 'from-cyan-500 to-purple-500' }
+  'apparel': { name: 'Apparel', icon: '👕', color: 'from-pink-500 to-rose-500', imageKeyword: 'clothing' },
+  'books': { name: 'Books', icon: '📚', color: 'from-blue-500 to-cyan-500', imageKeyword: 'books' },
+  'cosmetics': { name: 'Cosmetics', icon: '💄', color: 'from-purple-500 to-pink-500', imageKeyword: 'cosmetics' },
+  'digital': { name: 'Digital Gadgets', icon: '📱', color: 'from-green-500 to-emerald-500', imageKeyword: 'gadgets' },
+  'electronics': { name: 'Electronics', icon: '⚡', color: 'from-yellow-500 to-orange-500', imageKeyword: 'electronics' },
+  'footwear': { name: 'Footwear', icon: '👟', color: 'from-indigo-500 to-purple-500', imageKeyword: 'shoes' },
+  'groceries': { name: 'Groceries', icon: '🛒', color: 'from-green-500 to-teal-500', imageKeyword: 'groceries' },
+  'home': { name: 'Home Decor', icon: '🏠', color: 'from-orange-500 to-red-500', imageKeyword: 'home' },
+  'icecream': { name: 'Ice Cream & Desserts', icon: '🍦', color: 'from-pink-500 to-purple-500', imageKeyword: 'desserts' },
+  'jewelry': { name: 'Jewelry', icon: '💎', color: 'from-yellow-500 to-gold-500', imageKeyword: 'jewelry' },
+  'kitchen': { name: 'Kitchen Appliances', icon: '🍳', color: 'from-red-500 to-pink-500', imageKeyword: 'kitchen' },
+  'laptops': { name: 'Laptops & Accessories', icon: '💻', color: 'from-blue-500 to-purple-500', imageKeyword: 'laptops' },
+  'mobiles': { name: 'Mobiles & Tablets', icon: '📱', color: 'from-cyan-500 to-blue-500', imageKeyword: 'mobile' },
+  'nutrition': { name: 'Nutrition & Health', icon: '🏥', color: 'from-green-500 to-lime-500', imageKeyword: 'health' },
+  'organic': { name: 'Organic Food', icon: '🌱', color: 'from-green-500 to-emerald-500', imageKeyword: 'organic' },
+  'pets': { name: 'Pet Supplies', icon: '🐕', color: 'from-brown-500 to-amber-500', imageKeyword: 'pets' },
+  'quickmeals': { name: 'Quick Meals', icon: '🍕', color: 'from-orange-500 to-red-500', imageKeyword: 'food' },
+  'ridegear': { name: 'Ride Gear & Auto', icon: '🏍️', color: 'from-gray-500 to-slate-500', imageKeyword: 'automotive' },
+  'stationery': { name: 'Stationery & Office', icon: '📝', color: 'from-blue-500 to-indigo-500', imageKeyword: 'office' },
+  'toys': { name: 'Toys & Games', icon: '🎮', color: 'from-purple-500 to-pink-500', imageKeyword: 'toys' },
+  'underwear': { name: 'Underwear & Loungewear', icon: '👙', color: 'from-pink-500 to-rose-500', imageKeyword: 'underwear' },
+  'vegetables': { name: 'Vegetables & Fruits', icon: '🥕', color: 'from-green-500 to-yellow-500', imageKeyword: 'vegetables' },
+  'watches': { name: 'Watches', icon: '⌚', color: 'from-gray-500 to-blue-500', imageKeyword: 'watches' },
+  'xtreme': { name: 'Xtreme Sports Gear', icon: '🏂', color: 'from-red-500 to-orange-500', imageKeyword: 'sports' },
+  'yoga': { name: 'Yoga Products', icon: '🧘', color: 'from-purple-500 to-indigo-500', imageKeyword: 'yoga' },
+  'zipwear': { name: 'Zip Wearables (Smartwear)', icon: '⌚', color: 'from-cyan-500 to-purple-500', imageKeyword: 'smartwatch' }
 };
 
-// Generate products for the category
+// Product descriptions by category
+const productDescriptions = {
+  'apparel': [
+    'Premium cotton blend fabric with modern fit',
+    'Comfortable everyday wear with sustainable materials',
+    'Stylish design perfect for casual occasions',
+    'Breathable fabric with moisture-wicking properties',
+    'Classic style with contemporary updates'
+  ],
+  'books': [
+    'Bestselling novel with captivating storyline',
+    'Educational guide with practical insights',
+    'Fiction masterpiece from renowned author',
+    'Self-help book for personal development',
+    'Technical manual with step-by-step instructions'
+  ],
+  'electronics': [
+    'Latest technology with advanced features',
+    'High-performance device with long battery life',
+    'Smart connectivity with wireless capabilities',
+    'Premium build quality with sleek design',
+    'Energy-efficient with eco-friendly materials'
+  ],
+  'organic': [
+    'Certified organic with no artificial preservatives',
+    'Farm-fresh produce with natural flavors',
+    'Pesticide-free cultivation with rich nutrients',
+    'Sustainably grown with eco-friendly practices',
+    'Premium quality organic ingredients'
+  ]
+};
+
+// Generate products for the category with relevant descriptions
 const generateCategoryProducts = (categoryId: string, count: number = 25) => {
   const category = categories[categoryId as keyof typeof categories];
   if (!category) return [];
   
+  const descriptions = productDescriptions[categoryId as keyof typeof productDescriptions] || 
+    ['High-quality product with excellent features', 'Premium item with superior performance'];
+  
   const products = [];
   for (let i = 1; i <= count; i++) {
+    const basePrice = Math.floor(Math.random() * 2000) + 100;
+    const discount = Math.floor(Math.random() * 50) + 10;
+    const price = Math.floor(basePrice * (100 - discount) / 100);
+    
     products.push({
       id: `${categoryId}-${i}`,
       name: `${category.name} Product ${i}`,
-      price: Math.floor(Math.random() * 1000) + 50,
-      originalPrice: Math.floor(Math.random() * 1500) + 100,
+      price: price,
+      originalPrice: basePrice,
       rating: (Math.random() * 2 + 3).toFixed(1),
-      image: `https://picsum.photos/300/300?random=${categoryId}-${i}`,
+      image: `https://picsum.photos/300/300?random=${category.imageKeyword}-${i}`,
       category: categoryId,
-      discount: Math.floor(Math.random() * 50) + 10,
+      discount: discount,
       inStock: Math.random() > 0.1,
       brand: `Brand ${Math.floor(Math.random() * 10) + 1}`,
-      reviews: Math.floor(Math.random() * 1000) + 50
+      reviews: Math.floor(Math.random() * 1000) + 50,
+      description: descriptions[i % descriptions.length],
+      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+      colors: ['Red', 'Blue', 'Green', 'Black', 'White', 'Navy', 'Gray'],
+      features: [
+        'Premium quality materials',
+        'Durable construction',
+        'Easy maintenance',
+        'Satisfaction guaranteed'
+      ]
     });
   }
   return products;
@@ -76,7 +123,6 @@ const ProductList = () => {
   const filteredAndSortedProducts = useMemo(() => {
     let filtered = [...products];
 
-    // Filter by price range
     if (priceRange !== 'all') {
       const ranges = {
         'under-500': [0, 500],
@@ -88,7 +134,6 @@ const ProductList = () => {
       filtered = filtered.filter(product => product.price >= min && product.price <= max);
     }
 
-    // Sort products
     switch (sortBy) {
       case 'price-low':
         filtered.sort((a, b) => a.price - b.price);
@@ -103,7 +148,6 @@ const ProductList = () => {
         filtered.sort((a, b) => b.discount - a.discount);
         break;
       default:
-        // Featured - keep original order
         break;
     }
 
@@ -239,13 +283,15 @@ const ProductList = () => {
                 <div className={`relative overflow-hidden ${
                   viewMode === 'list' ? 'w-48 flex-shrink-0' : 'rounded-t-lg'
                 }`}>
-                  <img 
-                    src={product.image} 
-                    alt={product.name}
-                    className={`object-cover transition-transform duration-300 hover:scale-110 ${
-                      viewMode === 'list' ? 'w-full h-32' : 'w-full h-48'
-                    }`}
-                  />
+                  <Link to={`/product/${product.id}`}>
+                    <img 
+                      src={product.image} 
+                      alt={product.name}
+                      className={`object-cover transition-transform duration-300 hover:scale-110 ${
+                        viewMode === 'list' ? 'w-full h-32' : 'w-full h-48'
+                      }`}
+                    />
+                  </Link>
                   <Badge className="absolute top-2 left-2 bg-red-500 text-white">
                     {product.discount}% OFF
                   </Badge>
@@ -265,8 +311,11 @@ const ProductList = () => {
                 
                 <div className={`p-4 ${viewMode === 'list' ? 'flex-1 flex flex-col justify-between' : ''}`}>
                   <div>
-                    <h3 className="font-semibold text-black mb-2 line-clamp-2">{product.name}</h3>
+                    <Link to={`/product/${product.id}`}>
+                      <h3 className="font-semibold text-black mb-2 line-clamp-2 hover:text-blue-600 transition-colors">{product.name}</h3>
+                    </Link>
                     <p className="text-sm text-gray-600 mb-2">{product.brand}</p>
+                    <p className="text-xs text-gray-500 mb-2 line-clamp-2">{product.description}</p>
                     <div className="flex items-center space-x-1 mb-2">
                       <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                       <span className="text-sm text-black">{product.rating}</span>

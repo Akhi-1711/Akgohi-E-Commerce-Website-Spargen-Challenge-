@@ -1,20 +1,21 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, ShoppingCart, User, Heart, Star, ArrowRight, Sparkles, Gift, Truck, Shield, RotateCcw, Download } from 'lucide-react';
+import { ShoppingCart, User, Heart, Star, ArrowRight, Sparkles, Gift, Truck, Shield, RotateCcw, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useCart } from '@/contexts/CartContext';
 import AuthModal from '@/components/AuthModal';
+import SearchBar from '@/components/SearchBar';
 import { toast } from '@/hooks/use-toast';
 
 const Index = () => {
   const { state, addItem } = useCart();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [currentUser, setCurrentUser] = useState<string | null>(
+    localStorage.getItem('akgohi_current_user')
+  );
 
   const categories = [
     { id: 'apparel', name: 'Apparel (Clothing)', icon: '👕', count: 120, color: 'bg-pink-500' },
@@ -63,7 +64,7 @@ const Index = () => {
       name: 'Organic Cotton T-Shirt',
       price: 799,
       originalPrice: 1299,
-      image: 'https://picsum.photos/300/300?random=apparel-1',
+      image: 'https://picsum.photos/300/300?random=clothing-1',
       rating: 4.5,
       reviews: 156,
       discount: 38,
@@ -147,6 +148,25 @@ const Index = () => {
     setShowAuthModal(true);
   };
 
+  const handleAuthSuccess = (userData: any) => {
+    setCurrentUser(userData.name || userData.email);
+    localStorage.setItem('akgohi_current_user', userData.name || userData.email);
+    setShowAuthModal(false);
+    toast({
+      title: "Welcome!",
+      description: `Successfully logged in as ${userData.name || userData.email}`,
+    });
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    localStorage.removeItem('akgohi_current_user');
+    toast({
+      title: "Logged Out",
+      description: "You have been successfully logged out.",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -158,22 +178,23 @@ const Index = () => {
             </Link>
             
             <div className="hidden md:flex items-center space-x-6 flex-1 max-w-xl mx-8">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                <Input 
-                  placeholder="Search products..." 
-                  className="pl-10 bg-gray-50 border-gray-200 text-black"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
+              <SearchBar className="flex-1" />
             </div>
 
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" onClick={() => openAuth('login')} className="text-black hover:bg-gray-100">
-                <User className="h-5 w-5 mr-1" />
-                Login
-              </Button>
+              {currentUser ? (
+                <div className="flex items-center space-x-2">
+                  <span className="text-black font-medium">Welcome, {currentUser}!</span>
+                  <Button variant="ghost" onClick={handleLogout} className="text-black hover:bg-gray-100">
+                    Logout
+                  </Button>
+                </div>
+              ) : (
+                <Button variant="ghost" onClick={() => openAuth('login')} className="text-black hover:bg-gray-100">
+                  <User className="h-5 w-5 mr-1" />
+                  Login
+                </Button>
+              )}
               
               <Link to="/wishlist">
                 <Button variant="ghost" className="text-black hover:bg-gray-100">
@@ -202,15 +223,7 @@ const Index = () => {
           </div>
 
           <div className="md:hidden mt-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-              <Input 
-                placeholder="Search products..." 
-                className="pl-10 bg-gray-50 border-gray-200 text-black"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
+            <SearchBar />
           </div>
         </div>
       </header>
@@ -230,8 +243,8 @@ const Index = () => {
                 <Sparkles className="h-5 w-5 mr-2" />
                 Start Shopping
               </Button>
-              <Button size="lg" variant="outline" className="border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-600 hover:text-white bg-white px-8 py-3 text-lg transform hover:scale-110 transition-all duration-500 shadow-lg hover:shadow-2xl animate-pulse">
-                <Download className="h-5 w-5 mr-2 animate-bounce" />
+              <Button size="lg" variant="outline" className="border-2 border-gradient-to-r from-emerald-500 to-teal-500 text-emerald-700 hover:bg-gradient-to-r hover:from-emerald-500 hover:to-teal-500 hover:text-white bg-gradient-to-r from-emerald-100 to-teal-100 px-8 py-3 text-lg transform hover:scale-110 transition-all duration-500 shadow-lg hover:shadow-2xl animate-bounce">
+                <Download className="h-5 w-5 mr-2 animate-pulse" />
                 Download Now
               </Button>
             </div>
@@ -419,7 +432,7 @@ const Index = () => {
       <AuthModal 
         isOpen={showAuthModal} 
         onClose={() => setShowAuthModal(false)} 
-        onAuthSuccess={() => {}}
+        onAuthSuccess={handleAuthSuccess}
       />
     </div>
   );
