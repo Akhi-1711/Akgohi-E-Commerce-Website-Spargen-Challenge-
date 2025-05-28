@@ -16,117 +16,152 @@ const ProductDetail = () => {
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
 
-  // Enhanced product data with detailed descriptions
-  const products = {
-    '1': {
-      id: '1',
-      name: 'Premium Wireless Headphones',
-      price: 2999,
-      originalPrice: 4999,
-      rating: 4.5,
-      reviews: 1234,
-      discount: 40,
-      inStock: true,
-      category: 'electronics',
-      brand: 'TechBrand',
-      description: 'Experience crystal-clear audio with our premium wireless headphones. Featuring advanced noise cancellation technology, these headphones deliver exceptional sound quality with deep bass and crisp highs.',
-      detailedDescription: 'These premium wireless headphones are engineered for audiophiles who refuse to compromise on quality. The advanced active noise cancellation technology blocks out ambient noise, allowing you to immerse yourself completely in your music. The high-quality 40mm drivers deliver rich, detailed sound across all frequencies.',
-      features: [
-        'Active Noise Cancellation Technology',
-        '30-hour Extended Battery Life',
-        'Premium Comfort Design with Memory Foam',
-        'Bluetooth 5.0 Wireless Connectivity',
-        'High-Quality 40mm Audio Drivers',
-        'Quick Charge Feature - 15 min for 3 hours',
-        'Built-in Microphone for Calls',
-        'Foldable Design for Portability'
-      ]
-    },
-    '2': {
-      id: '2',
-      name: 'Stylish Cotton T-Shirt',
-      price: 799,
-      originalPrice: 1299,
-      rating: 4.5,
-      reviews: 156,
-      discount: 38,
-      inStock: true,
-      category: 'fashion',
-      brand: 'FashionCo',
-      description: 'Comfortable and stylish cotton t-shirt available in multiple colors. Made from premium organic cotton for everyday wear.',
-      detailedDescription: 'This premium cotton t-shirt combines comfort with style. Made from 100% organic cotton, it offers breathability and softness that lasts wash after wash. The classic fit works for any occasion.',
-      features: [
-        '100% Organic Cotton Material',
-        'Pre-shrunk for Perfect Fit',
-        'Breathable and Soft Fabric',
-        'Available in Multiple Colors',
-        'Machine Washable',
-        'Reinforced Stitching',
-        'Tag-free for Comfort',
-        'Eco-friendly Production'
-      ]
-    },
-    '3': {
-      id: '3',
-      name: 'Smart Home Security Camera',
-      price: 1999,
-      originalPrice: 2999,
-      rating: 4.6,
-      reviews: 89,
-      discount: 33,
-      inStock: true,
-      category: 'electronics',
-      brand: 'SecureTech',
-      description: 'Advanced security camera with 1080p HD video, night vision, and smartphone app control. Keep your home safe 24/7.',
-      detailedDescription: 'This smart security camera provides comprehensive home monitoring with crystal-clear 1080p video quality. The advanced night vision ensures clear footage even in complete darkness.',
-      features: [
-        '1080p Full HD Video Quality',
-        'Advanced Night Vision Technology',
-        'Two-way Audio Communication',
-        'Motion Detection Alerts',
-        'Cloud Storage Available',
-        'Weather-resistant Design',
-        'Easy Mobile App Control',
-        'Wide 130° Viewing Angle'
-      ]
-    },
-    '4': {
-      id: '4',
-      name: 'Yoga Mat Premium',
-      price: 1299,
-      originalPrice: 1999,
-      rating: 4.7,
-      reviews: 234,
-      discount: 35,
-      inStock: true,
-      category: 'sports',
-      brand: 'YogaPro',
-      description: 'Non-slip yoga mat made from eco-friendly materials. Perfect for yoga, pilates, and home workouts with superior grip.',
-      detailedDescription: 'This premium yoga mat is designed for serious practitioners. The eco-friendly TPE material provides excellent grip and cushioning while being gentle on the environment.',
-      features: [
-        'Eco-friendly TPE Material',
-        'Superior Non-slip Surface',
-        'Extra Thick 6mm Cushioning',
-        'Lightweight and Portable',
-        'Easy to Clean',
-        'Alignment Lines for Poses',
-        'Carrying Strap Included',
-        'Odor-resistant Treatment'
-      ]
+  // Enhanced product data with detailed descriptions by category
+  const getProductByCategory = (productId: string) => {
+    const categoryId = productId.split('-')[0];
+    
+    const categoryProducts = {
+      'books': {
+        names: ['The Great Adventure Novel', 'Programming Fundamentals', 'Mysteries of the Universe', 'Self-Help Mastery', 'Historical Chronicles'],
+        descriptions: [
+          'A captivating adventure story with unforgettable characters and thrilling plot twists that will keep you on the edge of your seat.',
+          'Comprehensive guide to programming concepts with practical examples and step-by-step tutorials for beginners and experts.',
+          'Explore the wonders of space and time through groundbreaking scientific discoveries and theories.',
+          'Transform your life with proven strategies, motivational insights, and actionable advice from leading experts.',
+          'Journey through history with this meticulously researched narrative covering major civilizations and events.'
+        ],
+        features: [
+          'High-quality paper and binding',
+          'Easy-to-read typography',
+          'Comprehensive index',
+          'Author biography included',
+          'Available in multiple formats',
+          'Bestseller recognition',
+          'Expert reviews',
+          'Educational value'
+        ]
+      },
+      'organic': {
+        names: ['Organic Quinoa Seeds', 'Fresh Organic Spinach', 'Organic Almond Butter', 'Pure Organic Honey', 'Organic Brown Rice'],
+        descriptions: [
+          'Premium quality quinoa seeds rich in protein, fiber, and essential amino acids. Perfect for healthy meals and weight management.',
+          'Fresh leafy greens packed with iron, vitamins A, C, K, and powerful antioxidants. Locally sourced and pesticide-free.',
+          'Creamy almond butter made from 100% organic almonds with no additives, preservatives, or artificial ingredients.',
+          'Pure raw honey harvested from organic bee farms, unprocessed and unfiltered to retain natural enzymes and nutrients.',
+          'Nutritious brown rice grown without pesticides or chemicals, rich in fiber and essential minerals.'
+        ],
+        features: [
+          'Certified organic ingredients',
+          'Non-GMO verified',
+          'Pesticide-free cultivation',
+          'Rich in nutrients',
+          'Sustainably sourced',
+          'Fair trade certified',
+          'Eco-friendly packaging',
+          'Farm-to-table freshness'
+        ]
+      },
+      'electronics': {
+        names: ['Smart Wireless Headphones', '4K Ultra HD Monitor', 'Gaming Mechanical Keyboard', 'Wireless Charging Pad', 'Bluetooth Speaker'],
+        descriptions: [
+          'Premium noise-cancelling headphones with crystal-clear audio, 30-hour battery life, and advanced Bluetooth connectivity.',
+          'Professional 4K display with HDR support, wide color gamut, and ultra-thin bezels perfect for work and entertainment.',
+          'High-performance mechanical keyboard with customizable RGB lighting, tactile switches, and programmable keys.',
+          'Fast wireless charging station compatible with all Qi-enabled devices, featuring smart temperature control.',
+          'Portable Bluetooth speaker with rich bass, 360-degree sound, and waterproof design for outdoor adventures.'
+        ],
+        features: [
+          'Latest technology integration',
+          'Premium build quality',
+          'Energy-efficient design',
+          'Wireless connectivity',
+          'Long battery life',
+          'User-friendly interface',
+          'Durable construction',
+          'Warranty included'
+        ]
+      },
+      'apparel': {
+        names: ['Premium Cotton T-Shirt', 'Classic Denim Jacket', 'Comfortable Joggers', 'Formal Button Shirt', 'Cozy Hoodie Sweatshirt'],
+        descriptions: [
+          'Ultra-soft cotton t-shirt with modern fit, breathable fabric, and fade-resistant colors. Perfect for everyday comfort.',
+          'Timeless denim jacket with vintage wash, quality stitching, and classic fit that never goes out of style.',
+          'Comfortable joggers with elastic waistband, perfect for workouts, lounging, or casual outings.',
+          'Professional button-down shirt with wrinkle-resistant fabric, perfect for business meetings and formal events.',
+          'Warm hoodie with soft fleece interior lining, kangaroo pocket, and adjustable drawstring hood.'
+        ],
+        features: [
+          'Premium fabric quality',
+          'Comfortable fit',
+          'Durable stitching',
+          'Fade-resistant colors',
+          'Easy care instructions',
+          'Breathable material',
+          'Versatile styling',
+          'Size range available'
+        ]
+      }
+    };
+
+    const index = parseInt(productId.split('-')[1]) - 1;
+    const categoryData = categoryProducts[categoryId as keyof typeof categoryProducts];
+    
+    if (!categoryData) {
+      return {
+        name: 'Premium Product',
+        description: 'High-quality product with excellent features',
+        detailedDescription: 'This premium product offers superior quality and performance.',
+        features: ['Premium quality', 'Durable construction', 'Easy maintenance', 'Satisfaction guaranteed']
+      };
     }
+
+    const nameIndex = index % categoryData.names.length;
+    const descIndex = index % categoryData.descriptions.length;
+
+    return {
+      name: categoryData.names[nameIndex],
+      description: categoryData.descriptions[descIndex],
+      detailedDescription: categoryData.descriptions[descIndex],
+      features: categoryData.features
+    };
   };
 
-  const product = products[productId as keyof typeof products] || products['1'];
+  const productData = getProductByCategory(productId || '1');
+
+  const product = {
+    id: productId || '1',
+    name: productData.name,
+    price: 1299 + (parseInt(productId?.split('-')[1] || '1') * 200),
+    originalPrice: 1999 + (parseInt(productId?.split('-')[1] || '1') * 300),
+    rating: 4.5,
+    reviews: 234 + (parseInt(productId?.split('-')[1] || '1') * 50),
+    discount: 35,
+    inStock: true,
+    category: productId?.split('-')[0] || 'electronics',
+    brand: 'Premium Brand',
+    description: productData.description,
+    detailedDescription: productData.detailedDescription,
+    features: productData.features
+  };
+
+  const categoryKeywords = {
+    'books': 'book',
+    'organic': 'organic-food',
+    'electronics': 'electronic',
+    'apparel': 'clothing'
+  };
+
+  const keyword = categoryKeywords[product.category as keyof typeof categoryKeywords] || 'product';
 
   const images = [
-    `https://picsum.photos/500/500?random=${productId}-1`,
-    `https://picsum.photos/500/500?random=${productId}-2`,
-    `https://picsum.photos/500/500?random=${productId}-3`,
-    `https://picsum.photos/500/500?random=${productId}-4`
+    `https://source.unsplash.com/500x500/?${keyword}&sig=${productId}-1`,
+    `https://source.unsplash.com/500x500/?${keyword}&sig=${productId}-2`,
+    `https://source.unsplash.com/500x500/?${keyword}&sig=${productId}-3`,
+    `https://source.unsplash.com/500x500/?${keyword}&sig=${productId}-4`
   ];
 
-  const sizes = ['S', 'M', 'L', 'XL'];
-  const colors = ['Black', 'White', 'Blue', 'Red', 'Silver'];
+  const sizes = ['S', 'M', 'L', 'XL', 'XXL'];
+  const colors = ['Red', 'Blue', 'Green', 'Black', 'White', 'Navy', 'Gray', 'Pink', 'Brown', 'Purple'];
 
   const addToCart = () => {
     if (!selectedSize || !selectedColor) {
@@ -287,7 +322,7 @@ const ProductDetail = () => {
             <Card className="bg-white border border-gray-200 rounded-lg shadow-sm">
               <CardContent className="p-6">
                 <h3 className="text-lg font-semibold text-black mb-4">Select Size *</h3>
-                <div className="grid grid-cols-4 gap-3">
+                <div className="grid grid-cols-5 gap-3">
                   {sizes.map((size) => (
                     <Button
                       key={size}
@@ -310,32 +345,36 @@ const ProductDetail = () => {
             <Card className="bg-white border border-gray-200 rounded-lg shadow-sm">
               <CardContent className="p-6">
                 <h3 className="text-lg font-semibold text-black mb-4">Select Color *</h3>
-                <div className="flex space-x-3 flex-wrap gap-2">
+                <div className="grid grid-cols-5 gap-3">
                   {colors.map((color) => (
                     <div key={color} className="relative">
                       <Button
                         variant="outline"
-                        className={`w-12 h-12 rounded-full p-0 border-2 transition-all duration-300 ${
+                        className={`w-full h-12 p-2 border-2 transition-all duration-300 ${
                           selectedColor === color 
-                            ? 'border-blue-500 shadow-md' 
+                            ? 'border-blue-500 shadow-md bg-blue-50' 
                             : 'border-gray-300 hover:border-gray-400'
                         }`}
                         style={{ 
-                          backgroundColor: color.toLowerCase() === 'black' ? '#000' :
+                          backgroundColor: selectedColor === color ? undefined :
+                                          color.toLowerCase() === 'black' ? '#000' :
                                           color.toLowerCase() === 'white' ? '#fff' :
                                           color.toLowerCase() === 'blue' ? '#3b82f6' :
                                           color.toLowerCase() === 'red' ? '#ef4444' :
-                                          color.toLowerCase() === 'silver' ? '#94a3b8' : color.toLowerCase()
+                                          color.toLowerCase() === 'green' ? '#22c55e' :
+                                          color.toLowerCase() === 'navy' ? '#1e40af' :
+                                          color.toLowerCase() === 'gray' ? '#6b7280' :
+                                          color.toLowerCase() === 'pink' ? '#ec4899' :
+                                          color.toLowerCase() === 'brown' ? '#a3a3a3' :
+                                          color.toLowerCase() === 'purple' ? '#8b5cf6' : color.toLowerCase()
                         }}
                         onClick={() => setSelectedColor(color)}
                       >
                         {selectedColor === color && (
                           <Check className="h-4 w-4 text-white" />
                         )}
+                        <span className="text-xs mt-1 text-black">{color}</span>
                       </Button>
-                      <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-black font-medium">
-                        {color}
-                      </span>
                     </div>
                   ))}
                 </div>

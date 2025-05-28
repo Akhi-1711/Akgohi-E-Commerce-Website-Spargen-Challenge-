@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, User, Heart, Star, ArrowRight, Sparkles, Gift, Truck, Shield, RotateCcw, Download } from 'lucide-react';
+import { Search, Menu, X, ShoppingCart, Heart, User, Star, ChevronRight, Truck, Shield, RotateCcw, Headphones } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { useCart } from '@/contexts/CartContext';
-import AuthModal from '@/components/AuthModal';
 import SearchBar from '@/components/SearchBar';
+import AuthModal from '@/components/AuthModal';
+import { useCart } from '@/contexts/CartContext';
 import { toast } from '@/hooks/use-toast';
+import Footer from '@/components/Footer';
 
 const Index = () => {
   const { state, addItem } = useCart();
@@ -385,55 +386,7 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-2xl font-bold mb-4">AKGOHI</h3>
-              <p className="text-gray-300 mb-4">Your Ultimate Shopping Destination</p>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-2">
-                <li><Link to="/" className="text-gray-300 hover:text-white transition-colors">Home</Link></li>
-                <li><Link to="/category/electronics" className="text-gray-300 hover:text-white transition-colors">Electronics</Link></li>
-                <li><Link to="/category/apparel" className="text-gray-300 hover:text-white transition-colors">Fashion</Link></li>
-                <li><Link to="/category/books" className="text-gray-300 hover:text-white transition-colors">Books</Link></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold mb-4">Customer Service</h4>
-              <ul className="space-y-2">
-                <li><Link to="/contact" className="text-gray-300 hover:text-white transition-colors">Contact Us</Link></li>
-                <li><Link to="/faq" className="text-gray-300 hover:text-white transition-colors">FAQ</Link></li>
-                <li><Link to="/shipping" className="text-gray-300 hover:text-white transition-colors">Shipping Info</Link></li>
-                <li><Link to="/returns" className="text-gray-300 hover:text-white transition-colors">Returns</Link></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold mb-4">Follow Us</h4>
-              <div className="flex space-x-4">
-                <a href="https://www.facebook.com/login" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors">Facebook</a>
-                <a href="https://www.twitter.com/login" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors">Twitter</a>
-                <a href="https://www.instagram.com/login" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors">Instagram</a>
-              </div>
-            </div>
-          </div>
-          
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center">
-            <p className="text-gray-300">&copy; 2024 AKGOHI. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
-
-      <AuthModal 
-        isOpen={showAuthModal} 
-        onClose={() => setShowAuthModal(false)} 
-        onAuthSuccess={handleAuthSuccess}
-      />
+      <Footer />
     </div>
   );
 };

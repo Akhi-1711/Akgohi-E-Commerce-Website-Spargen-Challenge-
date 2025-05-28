@@ -8,75 +8,88 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useCart } from '@/contexts/CartContext';
 import { toast } from '@/hooks/use-toast';
 
-// Categories data with image keywords
+// Categories data with specific Unsplash collections for relevant images
 const categories = {
-  'apparel': { name: 'Apparel', icon: '👕', color: 'from-pink-500 to-rose-500', imageKeyword: 'clothing' },
-  'books': { name: 'Books', icon: '📚', color: 'from-blue-500 to-cyan-500', imageKeyword: 'books' },
-  'cosmetics': { name: 'Cosmetics', icon: '💄', color: 'from-purple-500 to-pink-500', imageKeyword: 'cosmetics' },
-  'digital': { name: 'Digital Gadgets', icon: '📱', color: 'from-green-500 to-emerald-500', imageKeyword: 'gadgets' },
-  'electronics': { name: 'Electronics', icon: '⚡', color: 'from-yellow-500 to-orange-500', imageKeyword: 'electronics' },
-  'footwear': { name: 'Footwear', icon: '👟', color: 'from-indigo-500 to-purple-500', imageKeyword: 'shoes' },
-  'groceries': { name: 'Groceries', icon: '🛒', color: 'from-green-500 to-teal-500', imageKeyword: 'groceries' },
-  'home': { name: 'Home Decor', icon: '🏠', color: 'from-orange-500 to-red-500', imageKeyword: 'home' },
-  'icecream': { name: 'Ice Cream & Desserts', icon: '🍦', color: 'from-pink-500 to-purple-500', imageKeyword: 'desserts' },
-  'jewelry': { name: 'Jewelry', icon: '💎', color: 'from-yellow-500 to-gold-500', imageKeyword: 'jewelry' },
-  'kitchen': { name: 'Kitchen Appliances', icon: '🍳', color: 'from-red-500 to-pink-500', imageKeyword: 'kitchen' },
-  'laptops': { name: 'Laptops & Accessories', icon: '💻', color: 'from-blue-500 to-purple-500', imageKeyword: 'laptops' },
-  'mobiles': { name: 'Mobiles & Tablets', icon: '📱', color: 'from-cyan-500 to-blue-500', imageKeyword: 'mobile' },
-  'nutrition': { name: 'Nutrition & Health', icon: '🏥', color: 'from-green-500 to-lime-500', imageKeyword: 'health' },
-  'organic': { name: 'Organic Food', icon: '🌱', color: 'from-green-500 to-emerald-500', imageKeyword: 'organic' },
-  'pets': { name: 'Pet Supplies', icon: '🐕', color: 'from-brown-500 to-amber-500', imageKeyword: 'pets' },
-  'quickmeals': { name: 'Quick Meals', icon: '🍕', color: 'from-orange-500 to-red-500', imageKeyword: 'food' },
-  'ridegear': { name: 'Ride Gear & Auto', icon: '🏍️', color: 'from-gray-500 to-slate-500', imageKeyword: 'automotive' },
-  'stationery': { name: 'Stationery & Office', icon: '📝', color: 'from-blue-500 to-indigo-500', imageKeyword: 'office' },
-  'toys': { name: 'Toys & Games', icon: '🎮', color: 'from-purple-500 to-pink-500', imageKeyword: 'toys' },
-  'underwear': { name: 'Underwear & Loungewear', icon: '👙', color: 'from-pink-500 to-rose-500', imageKeyword: 'underwear' },
-  'vegetables': { name: 'Vegetables & Fruits', icon: '🥕', color: 'from-green-500 to-yellow-500', imageKeyword: 'vegetables' },
-  'watches': { name: 'Watches', icon: '⌚', color: 'from-gray-500 to-blue-500', imageKeyword: 'watches' },
-  'xtreme': { name: 'Xtreme Sports Gear', icon: '🏂', color: 'from-red-500 to-orange-500', imageKeyword: 'sports' },
-  'yoga': { name: 'Yoga Products', icon: '🧘', color: 'from-purple-500 to-indigo-500', imageKeyword: 'yoga' },
-  'zipwear': { name: 'Zip Wearables (Smartwear)', icon: '⌚', color: 'from-cyan-500 to-purple-500', imageKeyword: 'smartwatch' }
+  'apparel': { name: 'Apparel', icon: '👕', color: 'from-pink-500 to-rose-500', imageKeyword: 'clothing', collection: 'fashion' },
+  'books': { name: 'Books', icon: '📚', color: 'from-blue-500 to-cyan-500', imageKeyword: 'book', collection: 'books' },
+  'cosmetics': { name: 'Cosmetics', icon: '💄', color: 'from-purple-500 to-pink-500', imageKeyword: 'cosmetic', collection: 'beauty' },
+  'digital': { name: 'Digital Gadgets', icon: '📱', color: 'from-green-500 to-emerald-500', imageKeyword: 'gadget', collection: 'technology' },
+  'electronics': { name: 'Electronics', icon: '⚡', color: 'from-yellow-500 to-orange-500', imageKeyword: 'electronic', collection: 'technology' },
+  'footwear': { name: 'Footwear', icon: '👟', color: 'from-indigo-500 to-purple-500', imageKeyword: 'shoe', collection: 'fashion' },
+  'groceries': { name: 'Groceries', icon: '🛒', color: 'from-green-500 to-teal-500', imageKeyword: 'grocery', collection: 'food-drink' },
+  'home': { name: 'Home Decor', icon: '🏠', color: 'from-orange-500 to-red-500', imageKeyword: 'home-decor', collection: 'interiors' },
+  'icecream': { name: 'Ice Cream & Desserts', icon: '🍦', color: 'from-pink-500 to-purple-500', imageKeyword: 'ice-cream', collection: 'food-drink' },
+  'jewelry': { name: 'Jewelry', icon: '💎', color: 'from-yellow-500 to-gold-500', imageKeyword: 'jewelry', collection: 'fashion' },
+  'kitchen': { name: 'Kitchen Appliances', icon: '🍳', color: 'from-red-500 to-pink-500', imageKeyword: 'kitchen', collection: 'interiors' },
+  'laptops': { name: 'Laptops & Accessories', icon: '💻', color: 'from-blue-500 to-purple-500', imageKeyword: 'laptop', collection: 'technology' },
+  'mobiles': { name: 'Mobiles & Tablets', icon: '📱', color: 'from-cyan-500 to-blue-500', imageKeyword: 'smartphone', collection: 'technology' },
+  'nutrition': { name: 'Nutrition & Health', icon: '🏥', color: 'from-green-500 to-lime-500', imageKeyword: 'health', collection: 'health' },
+  'organic': { name: 'Organic Food', icon: '🌱', color: 'from-green-500 to-emerald-500', imageKeyword: 'organic-food', collection: 'food-drink' },
+  'pets': { name: 'Pet Supplies', icon: '🐕', color: 'from-brown-500 to-amber-500', imageKeyword: 'pet', collection: 'animals' },
+  'quickmeals': { name: 'Quick Meals', icon: '🍕', color: 'from-orange-500 to-red-500', imageKeyword: 'fast-food', collection: 'food-drink' },
+  'ridegear': { name: 'Ride Gear & Auto', icon: '🏍️', color: 'from-gray-500 to-slate-500', imageKeyword: 'motorcycle', collection: 'travel' },
+  'stationery': { name: 'Stationery & Office', icon: '📝', color: 'from-blue-500 to-indigo-500', imageKeyword: 'stationery', collection: 'business-work' },
+  'toys': { name: 'Toys & Games', icon: '🎮', color: 'from-purple-500 to-pink-500', imageKeyword: 'toy', collection: 'people' },
+  'underwear': { name: 'Underwear & Loungewear', icon: '👙', color: 'from-pink-500 to-rose-500', imageKeyword: 'underwear', collection: 'fashion' },
+  'vegetables': { name: 'Vegetables & Fruits', icon: '🥕', color: 'from-green-500 to-yellow-500', imageKeyword: 'vegetable', collection: 'food-drink' },
+  'watches': { name: 'Watches', icon: '⌚', color: 'from-gray-500 to-blue-500', imageKeyword: 'watch', collection: 'fashion' },
+  'xtreme': { name: 'Xtreme Sports Gear', icon: '🏂', color: 'from-red-500 to-orange-500', imageKeyword: 'extreme-sports', collection: 'sports' },
+  'yoga': { name: 'Yoga Products', icon: '🧘', color: 'from-purple-500 to-indigo-500', imageKeyword: 'yoga', collection: 'health' },
+  'zipwear': { name: 'Zip Wearables (Smartwear)', icon: '⌚', color: 'from-cyan-500 to-purple-500', imageKeyword: 'smartwatch', collection: 'technology' }
 };
 
-// Product descriptions by category
-const productDescriptions = {
-  'apparel': [
-    'Premium cotton blend fabric with modern fit',
-    'Comfortable everyday wear with sustainable materials',
-    'Stylish design perfect for casual occasions',
-    'Breathable fabric with moisture-wicking properties',
-    'Classic style with contemporary updates'
-  ],
-  'books': [
-    'Bestselling novel with captivating storyline',
-    'Educational guide with practical insights',
-    'Fiction masterpiece from renowned author',
-    'Self-help book for personal development',
-    'Technical manual with step-by-step instructions'
-  ],
-  'electronics': [
-    'Latest technology with advanced features',
-    'High-performance device with long battery life',
-    'Smart connectivity with wireless capabilities',
-    'Premium build quality with sleek design',
-    'Energy-efficient with eco-friendly materials'
-  ],
-  'organic': [
-    'Certified organic with no artificial preservatives',
-    'Farm-fresh produce with natural flavors',
-    'Pesticide-free cultivation with rich nutrients',
-    'Sustainably grown with eco-friendly practices',
-    'Premium quality organic ingredients'
-  ]
+// Detailed product descriptions and names by category
+const productData = {
+  'books': {
+    names: ['The Great Adventure Novel', 'Programming Fundamentals', 'Mysteries of the Universe', 'Self-Help Mastery', 'Historical Chronicles'],
+    descriptions: [
+      'A captivating adventure story with unforgettable characters and plot twists',
+      'Comprehensive guide to programming concepts with practical examples',
+      'Explore the wonders of space and time through scientific discoveries',
+      'Transform your life with proven strategies and motivational insights',
+      'Journey through history with this well-researched narrative'
+    ]
+  },
+  'organic': {
+    names: ['Organic Quinoa Seeds', 'Fresh Organic Spinach', 'Organic Almond Butter', 'Pure Organic Honey', 'Organic Brown Rice'],
+    descriptions: [
+      'Premium quality quinoa seeds rich in protein and essential amino acids',
+      'Fresh leafy greens packed with iron, vitamins, and antioxidants',
+      'Creamy almond butter made from 100% organic almonds, no additives',
+      'Pure raw honey harvested from organic bee farms, unprocessed',
+      'Nutritious brown rice grown without pesticides or chemicals'
+    ]
+  },
+  'electronics': {
+    names: ['Smart Wireless Headphones', '4K Ultra HD Monitor', 'Gaming Mechanical Keyboard', 'Wireless Charging Pad', 'Bluetooth Speaker'],
+    descriptions: [
+      'Premium noise-cancelling headphones with 30-hour battery life',
+      'Crystal clear 4K display with HDR support for professional work',
+      'Mechanical keyboard with RGB lighting and tactile switches',
+      'Fast wireless charging for all Qi-compatible devices',
+      'Portable speaker with rich bass and 360-degree sound'
+    ]
+  },
+  'apparel': {
+    names: ['Cotton Casual T-Shirt', 'Denim Jacket Classic', 'Comfortable Joggers', 'Formal Button Shirt', 'Cozy Hoodie Sweatshirt'],
+    descriptions: [
+      'Soft cotton t-shirt with modern fit and breathable fabric',
+      'Timeless denim jacket with vintage wash and quality stitching',
+      'Comfortable joggers perfect for workouts and casual wear',
+      'Professional button-down shirt for business and formal occasions',
+      'Warm hoodie with soft interior lining and kangaroo pocket'
+    ]
+  }
 };
 
-// Generate products for the category with relevant descriptions
+// Generate products for the category with relevant images and descriptions
 const generateCategoryProducts = (categoryId: string, count: number = 25) => {
   const category = categories[categoryId as keyof typeof categories];
   if (!category) return [];
   
-  const descriptions = productDescriptions[categoryId as keyof typeof productDescriptions] || 
-    ['High-quality product with excellent features', 'Premium item with superior performance'];
+  const categoryData = productData[categoryId as keyof typeof productData];
+  const defaultNames = ['Premium Product', 'Quality Item', 'Best Seller', 'Top Choice', 'Popular Pick'];
+  const defaultDescriptions = ['High-quality product with excellent features and superior performance'];
   
   const products = [];
   for (let i = 1; i <= count; i++) {
@@ -84,21 +97,24 @@ const generateCategoryProducts = (categoryId: string, count: number = 25) => {
     const discount = Math.floor(Math.random() * 50) + 10;
     const price = Math.floor(basePrice * (100 - discount) / 100);
     
+    const nameIndex = (i - 1) % (categoryData?.names.length || defaultNames.length);
+    const descIndex = (i - 1) % (categoryData?.descriptions.length || defaultDescriptions.length);
+    
     products.push({
       id: `${categoryId}-${i}`,
-      name: `${category.name} Product ${i}`,
+      name: categoryData?.names[nameIndex] || `${defaultNames[nameIndex]} ${i}`,
       price: price,
       originalPrice: basePrice,
       rating: (Math.random() * 2 + 3).toFixed(1),
-      image: `https://picsum.photos/300/300?random=${category.imageKeyword}-${i}`,
+      image: `https://source.unsplash.com/300x300/?${category.imageKeyword}&sig=${i}`,
       category: categoryId,
       discount: discount,
       inStock: Math.random() > 0.1,
       brand: `Brand ${Math.floor(Math.random() * 10) + 1}`,
       reviews: Math.floor(Math.random() * 1000) + 50,
-      description: descriptions[i % descriptions.length],
+      description: categoryData?.descriptions[descIndex] || defaultDescriptions[0],
       sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-      colors: ['Red', 'Blue', 'Green', 'Black', 'White', 'Navy', 'Gray'],
+      colors: ['Red', 'Blue', 'Green', 'Black', 'White', 'Navy', 'Gray', 'Pink', 'Brown', 'Purple'],
       features: [
         'Premium quality materials',
         'Durable construction',
