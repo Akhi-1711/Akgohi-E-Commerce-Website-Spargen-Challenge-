@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, ShoppingCart, Heart, Star, Plus, Minus, Truck, Shield, RotateCcw, Check } from 'lucide-react';
@@ -144,21 +143,44 @@ const ProductDetail = () => {
     features: productData.features
   };
 
-  const categoryKeywords = {
-    'books': 'book',
-    'organic': 'organic-food',
-    'electronics': 'electronic',
-    'apparel': 'clothing'
+  // Category-specific image mappings
+  const getCategoryImages = (category: string, productId: string) => {
+    const categoryImageMap = {
+      'books': [
+        'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=500&h=500&fit=crop',
+        'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=500&h=500&fit=crop',
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=500&fit=crop',
+        'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=500&h=500&fit=crop'
+      ],
+      'organic': [
+        'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=500&h=500&fit=crop',
+        'https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?w=500&h=500&fit=crop',
+        'https://images.unsplash.com/photo-1542838132-92c53300491e?w=500&h=500&fit=crop',
+        'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500&h=500&fit=crop'
+      ],
+      'electronics': [
+        'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&h=500&fit=crop',
+        'https://images.unsplash.com/photo-1484704849700-f032a568e944?w=500&h=500&fit=crop',
+        'https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=500&h=500&fit=crop',
+        'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=500&h=500&fit=crop'
+      ],
+      'apparel': [
+        'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&h=500&fit=crop',
+        'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500&h=500&fit=crop',
+        'https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=500&h=500&fit=crop',
+        'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=500&h=500&fit=crop'
+      ]
+    };
+
+    return categoryImageMap[category as keyof typeof categoryImageMap] || [
+      'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=500&h=500&fit=crop',
+      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500&h=500&fit=crop',
+      'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500&h=500&fit=crop',
+      'https://images.unsplash.com/photo-1594736797933-d0d3ad8771a0?w=500&h=500&fit=crop'
+    ];
   };
 
-  const keyword = categoryKeywords[product.category as keyof typeof categoryKeywords] || 'product';
-
-  const images = [
-    `https://source.unsplash.com/500x500/?${keyword}&sig=${productId}-1`,
-    `https://source.unsplash.com/500x500/?${keyword}&sig=${productId}-2`,
-    `https://source.unsplash.com/500x500/?${keyword}&sig=${productId}-3`,
-    `https://source.unsplash.com/500x500/?${keyword}&sig=${productId}-4`
-  ];
+  const images = getCategoryImages(product.category, productId || '1');
 
   const sizes = ['S', 'M', 'L', 'XL', 'XXL'];
   const colors = ['Red', 'Blue', 'Green', 'Black', 'White', 'Navy', 'Gray', 'Pink', 'Brown', 'Purple'];
