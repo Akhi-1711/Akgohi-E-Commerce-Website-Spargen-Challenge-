@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ShoppingCart, Heart, Star, Filter, Grid, List, ArrowLeft } from 'lucide-react';
@@ -8,37 +9,37 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useCart } from '@/contexts/CartContext';
 import { toast } from '@/hooks/use-toast';
 
-// Categories data with specific Unsplash collections for relevant images
+// Categories data with better image mappings
 const categories = {
-  'apparel': { name: 'Apparel', icon: '👕', color: 'from-pink-500 to-rose-500', imageKeyword: 'clothing', collection: 'fashion' },
-  'books': { name: 'Books', icon: '📚', color: 'from-blue-500 to-cyan-500', imageKeyword: 'book', collection: 'books' },
-  'cosmetics': { name: 'Cosmetics', icon: '💄', color: 'from-purple-500 to-pink-500', imageKeyword: 'cosmetic', collection: 'beauty' },
-  'digital': { name: 'Digital Gadgets', icon: '📱', color: 'from-green-500 to-emerald-500', imageKeyword: 'gadget', collection: 'technology' },
-  'electronics': { name: 'Electronics', icon: '⚡', color: 'from-yellow-500 to-orange-500', imageKeyword: 'electronic', collection: 'technology' },
-  'footwear': { name: 'Footwear', icon: '👟', color: 'from-indigo-500 to-purple-500', imageKeyword: 'shoe', collection: 'fashion' },
-  'groceries': { name: 'Groceries', icon: '🛒', color: 'from-green-500 to-teal-500', imageKeyword: 'grocery', collection: 'food-drink' },
-  'home': { name: 'Home Decor', icon: '🏠', color: 'from-orange-500 to-red-500', imageKeyword: 'home-decor', collection: 'interiors' },
-  'icecream': { name: 'Ice Cream & Desserts', icon: '🍦', color: 'from-pink-500 to-purple-500', imageKeyword: 'ice-cream', collection: 'food-drink' },
-  'jewelry': { name: 'Jewelry', icon: '💎', color: 'from-yellow-500 to-gold-500', imageKeyword: 'jewelry', collection: 'fashion' },
-  'kitchen': { name: 'Kitchen Appliances', icon: '🍳', color: 'from-red-500 to-pink-500', imageKeyword: 'kitchen', collection: 'interiors' },
-  'laptops': { name: 'Laptops & Accessories', icon: '💻', color: 'from-blue-500 to-purple-500', imageKeyword: 'laptop', collection: 'technology' },
-  'mobiles': { name: 'Mobiles & Tablets', icon: '📱', color: 'from-cyan-500 to-blue-500', imageKeyword: 'smartphone', collection: 'technology' },
-  'nutrition': { name: 'Nutrition & Health', icon: '🏥', color: 'from-green-500 to-lime-500', imageKeyword: 'health', collection: 'health' },
-  'organic': { name: 'Organic Food', icon: '🌱', color: 'from-green-500 to-emerald-500', imageKeyword: 'organic-food', collection: 'food-drink' },
-  'pets': { name: 'Pet Supplies', icon: '🐕', color: 'from-brown-500 to-amber-500', imageKeyword: 'pet', collection: 'animals' },
-  'quickmeals': { name: 'Quick Meals', icon: '🍕', color: 'from-orange-500 to-red-500', imageKeyword: 'fast-food', collection: 'food-drink' },
-  'ridegear': { name: 'Ride Gear & Auto', icon: '🏍️', color: 'from-gray-500 to-slate-500', imageKeyword: 'motorcycle', collection: 'travel' },
-  'stationery': { name: 'Stationery & Office', icon: '📝', color: 'from-blue-500 to-indigo-500', imageKeyword: 'stationery', collection: 'business-work' },
-  'toys': { name: 'Toys & Games', icon: '🎮', color: 'from-purple-500 to-pink-500', imageKeyword: 'toy', collection: 'people' },
-  'underwear': { name: 'Underwear & Loungewear', icon: '👙', color: 'from-pink-500 to-rose-500', imageKeyword: 'underwear', collection: 'fashion' },
-  'vegetables': { name: 'Vegetables & Fruits', icon: '🥕', color: 'from-green-500 to-yellow-500', imageKeyword: 'vegetable', collection: 'food-drink' },
-  'watches': { name: 'Watches', icon: '⌚', color: 'from-gray-500 to-blue-500', imageKeyword: 'watch', collection: 'fashion' },
-  'xtreme': { name: 'Xtreme Sports Gear', icon: '🏂', color: 'from-red-500 to-orange-500', imageKeyword: 'extreme-sports', collection: 'sports' },
-  'yoga': { name: 'Yoga Products', icon: '🧘', color: 'from-purple-500 to-indigo-500', imageKeyword: 'yoga', collection: 'health' },
-  'zipwear': { name: 'Zip Wearables (Smartwear)', icon: '⌚', color: 'from-cyan-500 to-purple-500', imageKeyword: 'smartwatch', collection: 'technology' }
+  'apparel': { name: 'Apparel', icon: '👕', color: 'from-pink-500 to-rose-500', imageKeyword: 'clothing' },
+  'books': { name: 'Books', icon: '📚', color: 'from-blue-500 to-cyan-500', imageKeyword: 'book' },
+  'cosmetics': { name: 'Cosmetics', icon: '💄', color: 'from-purple-500 to-pink-500', imageKeyword: 'cosmetic' },
+  'digital': { name: 'Digital Gadgets', icon: '📱', color: 'from-green-500 to-emerald-500', imageKeyword: 'gadget' },
+  'electronics': { name: 'Electronics', icon: '⚡', color: 'from-yellow-500 to-orange-500', imageKeyword: 'electronic' },
+  'footwear': { name: 'Footwear', icon: '👟', color: 'from-indigo-500 to-purple-500', imageKeyword: 'shoe' },
+  'groceries': { name: 'Groceries', icon: '🛒', color: 'from-green-500 to-teal-500', imageKeyword: 'grocery' },
+  'home': { name: 'Home Decor', icon: '🏠', color: 'from-orange-500 to-red-500', imageKeyword: 'home-decor' },
+  'icecream': { name: 'Ice Cream & Desserts', icon: '🍦', color: 'from-pink-500 to-purple-500', imageKeyword: 'ice-cream' },
+  'jewelry': { name: 'Jewelry', icon: '💎', color: 'from-yellow-500 to-gold-500', imageKeyword: 'jewelry' },
+  'kitchen': { name: 'Kitchen Appliances', icon: '🍳', color: 'from-red-500 to-pink-500', imageKeyword: 'kitchen' },
+  'laptops': { name: 'Laptops & Accessories', icon: '💻', color: 'from-blue-500 to-purple-500', imageKeyword: 'laptop' },
+  'mobiles': { name: 'Mobiles & Tablets', icon: '📱', color: 'from-cyan-500 to-blue-500', imageKeyword: 'smartphone' },
+  'nutrition': { name: 'Nutrition & Health', icon: '🏥', color: 'from-green-500 to-lime-500', imageKeyword: 'health' },
+  'organic': { name: 'Organic Food', icon: '🌱', color: 'from-green-500 to-emerald-500', imageKeyword: 'organic-food' },
+  'pets': { name: 'Pet Supplies', icon: '🐕', color: 'from-brown-500 to-amber-500', imageKeyword: 'pet' },
+  'quickmeals': { name: 'Quick Meals', icon: '🍕', color: 'from-orange-500 to-red-500', imageKeyword: 'fast-food' },
+  'ridegear': { name: 'Ride Gear & Auto', icon: '🏍️', color: 'from-gray-500 to-slate-500', imageKeyword: 'motorcycle' },
+  'stationery': { name: 'Stationery & Office', icon: '📝', color: 'from-blue-500 to-indigo-500', imageKeyword: 'stationery' },
+  'toys': { name: 'Toys & Games', icon: '🎮', color: 'from-purple-500 to-pink-500', imageKeyword: 'toy' },
+  'underwear': { name: 'Underwear & Loungewear', icon: '👙', color: 'from-pink-500 to-rose-500', imageKeyword: 'underwear' },
+  'vegetables': { name: 'Vegetables & Fruits', icon: '🥕', color: 'from-green-500 to-yellow-500', imageKeyword: 'vegetable' },
+  'watches': { name: 'Watches', icon: '⌚', color: 'from-gray-500 to-blue-500', imageKeyword: 'watch' },
+  'xtreme': { name: 'Xtreme Sports Gear', icon: '🏂', color: 'from-red-500 to-orange-500', imageKeyword: 'extreme-sports' },
+  'yoga': { name: 'Yoga Products', icon: '🧘', color: 'from-purple-500 to-indigo-500', imageKeyword: 'yoga' },
+  'zipwear': { name: 'Zip Wearables (Smartwear)', icon: '⌚', color: 'from-cyan-500 to-purple-500', imageKeyword: 'smartwatch' }
 };
 
-// Detailed product descriptions and names by category
+// Product data with category-specific names and descriptions
 const productData = {
   'books': {
     names: ['The Great Adventure Novel', 'Programming Fundamentals', 'Mysteries of the Universe', 'Self-Help Mastery', 'Historical Chronicles'],
@@ -82,7 +83,7 @@ const productData = {
   }
 };
 
-// Generate products for the category with relevant images and descriptions
+// Generate products with better images
 const generateCategoryProducts = (categoryId: string, count: number = 25) => {
   const category = categories[categoryId as keyof typeof categories];
   if (!category) return [];
@@ -92,6 +93,26 @@ const generateCategoryProducts = (categoryId: string, count: number = 25) => {
   const defaultDescriptions = ['High-quality product with excellent features and superior performance'];
   
   const products = [];
+  
+  // Better image URLs with more specific categories
+  const getImageUrl = (categoryId: string, index: number) => {
+    const imageMap = {
+      'books': `https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=400&fit=crop&crop=center&sig=${index}`,
+      'organic': `https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=400&h=400&fit=crop&crop=center&sig=${index}`,
+      'electronics': `https://images.unsplash.com/photo-1484704849700-f032a568e944?w=400&h=400&fit=crop&crop=center&sig=${index}`,
+      'apparel': `https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&h=400&fit=crop&crop=center&sig=${index}`,
+      'footwear': `https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop&crop=center&sig=${index}`,
+      'cosmetics': `https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=400&fit=crop&crop=center&sig=${index}`,
+      'jewelry': `https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=400&fit=crop&crop=center&sig=${index}`,
+      'watches': `https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop&crop=center&sig=${index}`,
+      'yoga': `https://images.unsplash.com/photo-1506629905587-4b9ab49be7e1?w=400&h=400&fit=crop&crop=center&sig=${index}`,
+      'laptops': `https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=400&fit=crop&crop=center&sig=${index}`
+    };
+    
+    return imageMap[categoryId as keyof typeof imageMap] || 
+           `https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=400&fit=crop&crop=center&sig=${index}`;
+  };
+  
   for (let i = 1; i <= count; i++) {
     const basePrice = Math.floor(Math.random() * 2000) + 100;
     const discount = Math.floor(Math.random() * 50) + 10;
@@ -106,7 +127,7 @@ const generateCategoryProducts = (categoryId: string, count: number = 25) => {
       price: price,
       originalPrice: basePrice,
       rating: (Math.random() * 2 + 3).toFixed(1),
-      image: `https://source.unsplash.com/300x300/?${category.imageKeyword}&sig=${i}`,
+      image: getImageUrl(categoryId, i),
       category: categoryId,
       discount: discount,
       inStock: Math.random() > 0.1,

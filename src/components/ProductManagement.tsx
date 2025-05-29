@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Plus, Edit, Trash2, Eye, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -31,7 +30,7 @@ const ProductManagement = () => {
       originalPrice: 4999,
       category: 'Electronics',
       stock: 50,
-      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop',
+      image: 'https://images.unsplash.com/photo-1484704849700-f032a568e944?w=400&h=400&fit=crop&crop=center',
       description: 'High-quality wireless headphones with active noise cancellation',
       rating: 4.8,
       reviews: 324,
@@ -44,7 +43,7 @@ const ProductManagement = () => {
       originalPrice: 1299,
       category: 'Apparel',
       stock: 100,
-      image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=300&fit=crop',
+      image: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&h=400&fit=crop&crop=center',
       description: '100% organic cotton t-shirt with premium comfort',
       rating: 4.5,
       reviews: 156,
@@ -57,7 +56,7 @@ const ProductManagement = () => {
       originalPrice: 299,
       category: 'Organic',
       stock: 75,
-      image: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=300&h=300&fit=crop',
+      image: 'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=400&h=400&fit=crop&crop=center',
       description: 'Premium quality organic apples grown without pesticides',
       rating: 4.6,
       reviews: 89,
@@ -70,7 +69,7 @@ const ProductManagement = () => {
       originalPrice: 1999,
       category: 'Yoga',
       stock: 30,
-      image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=300&h=300&fit=crop',
+      image: 'https://images.unsplash.com/photo-1506629905587-4b9ab49be7e1?w=400&h=400&fit=crop&crop=center',
       description: 'Eco-friendly TPE yoga mat with superior non-slip surface',
       rating: 4.7,
       reviews: 234,
@@ -83,7 +82,7 @@ const ProductManagement = () => {
       originalPrice: 8999,
       category: 'Electronics',
       stock: 25,
-      image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=300&fit=crop',
+      image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop&crop=center',
       description: 'Advanced fitness tracking with heart rate monitor',
       rating: 4.4,
       reviews: 187,
@@ -113,19 +112,19 @@ const ProductManagement = () => {
 
   const getDefaultImageForCategory = (category: string) => {
     const categoryImageMap: { [key: string]: string } = {
-      'Electronics': 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop',
-      'Apparel': 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=300&fit=crop',
-      'Books': 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=300&h=300&fit=crop',
-      'Organic': 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=300&h=300&fit=crop',
-      'Yoga': 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=300&h=300&fit=crop',
-      'Kitchen': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=300&h=300&fit=crop',
-      'Footwear': 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&h=300&fit=crop',
-      'Cosmetics': 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=300&h=300&fit=crop',
-      'Jewelry': 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=300&h=300&fit=crop',
-      'Home Decor': 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=300&h=300&fit=crop'
+      'Electronics': 'https://images.unsplash.com/photo-1484704849700-f032a568e944?w=400&h=400&fit=crop&crop=center',
+      'Apparel': 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&h=400&fit=crop&crop=center',
+      'Books': 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=400&fit=crop&crop=center',
+      'Organic': 'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=400&h=400&fit=crop&crop=center',
+      'Yoga': 'https://images.unsplash.com/photo-1506629905587-4b9ab49be7e1?w=400&h=400&fit=crop&crop=center',
+      'Kitchen': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop&crop=center',
+      'Footwear': 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop&crop=center',
+      'Cosmetics': 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=400&fit=crop&crop=center',
+      'Jewelry': 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=400&fit=crop&crop=center',
+      'Home Decor': 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=400&fit=crop&crop=center'
     };
     
-    return categoryImageMap[category] || 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300&h=300&fit=crop';
+    return categoryImageMap[category] || 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=400&fit=crop&crop=center';
   };
 
   const handleAddProduct = () => {
