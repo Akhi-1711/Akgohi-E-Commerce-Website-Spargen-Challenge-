@@ -8,12 +8,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/hooks/use-toast';
 
 interface AuthModalProps {
-  isOpen: boolean;
+  mode?: 'login' | 'signup';
+  isOpen?: boolean;
   onClose: () => void;
-  onAuthSuccess: (user: any) => void;
+  onSuccess: (userData: any) => void;
+  onAuthSuccess?: (user: any) => void;
 }
 
-const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess }) => {
+const AuthModal: React.FC<AuthModalProps> = ({ 
+  mode = 'login', 
+  isOpen = true, 
+  onClose, 
+  onSuccess, 
+  onAuthSuccess 
+}) => {
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [registerData, setRegisterData] = useState({ 
     name: '', 
@@ -39,7 +47,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
       };
       
       localStorage.setItem('akgohi_user', JSON.stringify(user));
-      onAuthSuccess(user);
+      
+      // Call both success handlers for backward compatibility
+      onSuccess(user);
+      if (onAuthSuccess) onAuthSuccess(user);
+      
       onClose();
       setIsLoading(false);
       
@@ -75,7 +87,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
       };
       
       localStorage.setItem('akgohi_user', JSON.stringify(user));
-      onAuthSuccess(user);
+      
+      // Call both success handlers for backward compatibility
+      onSuccess(user);
+      if (onAuthSuccess) onAuthSuccess(user);
+      
       onClose();
       setIsLoading(false);
       
@@ -95,10 +111,10 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
           </DialogTitle>
         </DialogHeader>
         
-        <Tabs defaultValue="login" className="w-full">
+        <Tabs defaultValue={mode} className="w-full">
           <TabsList className="grid w-full grid-cols-2 bg-black/30">
             <TabsTrigger value="login" className="data-[state=active]:bg-purple-500">Login</TabsTrigger>
-            <TabsTrigger value="register" className="data-[state=active]:bg-purple-500">Register</TabsTrigger>
+            <TabsTrigger value="signup" className="data-[state=active]:bg-purple-500">Register</TabsTrigger>
           </TabsList>
           
           <TabsContent value="login" className="space-y-4">
@@ -140,7 +156,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
             </p>
           </TabsContent>
           
-          <TabsContent value="register" className="space-y-4">
+          <TabsContent value="signup" className="space-y-4">
             <form onSubmit={handleRegister} className="space-y-4">
               <div>
                 <Label htmlFor="register-name" className="text-white">Full Name</Label>
