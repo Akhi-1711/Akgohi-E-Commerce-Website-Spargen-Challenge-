@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Menu, X, ShoppingCart, Heart, User, Star, ChevronRight, Truck, Shield, RotateCcw, Headphones } from 'lucide-react';
+import { Search, Menu, X, ShoppingCart, Heart, User, Star, ChevronRight, Truck, Shield, RotateCcw, Headphones, Sparkles, Download, Gift } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -9,6 +9,7 @@ import AuthModal from '@/components/AuthModal';
 import { useCart } from '@/contexts/CartContext';
 import { toast } from '@/hooks/use-toast';
 import Footer from '@/components/Footer';
+import CategoryMenu from '@/components/CategoryMenu';
 
 const Index = () => {
   const { state, addItem } = useCart();
@@ -227,6 +228,9 @@ const Index = () => {
             <SearchBar />
           </div>
         </div>
+
+        {/* Category Menu */}
+        <CategoryMenu categories={categories} />
       </header>
 
       {/* Hero Section */}
@@ -384,6 +388,15 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Auth Modal */}
+      {showAuthModal && (
+        <AuthModal 
+          mode={authMode}
+          onClose={() => setShowAuthModal(false)}
+          onSuccess={handleAuthSuccess}
+        />
+      )}
 
       {/* Footer */}
       <Footer />
